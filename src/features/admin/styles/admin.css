@@ -1,10 +1,10 @@
-﻿.admin-page {
+.admin-page {
   display: grid;
   gap: 1.5rem;
   padding: 1.5rem;
   border-radius: 1rem;
-  border: 1px solid #d4d4d4;
-  background: #ffffff;
+  border: 1px solid var(--pl-border);
+  background: var(--pl-surface);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
   backdrop-filter: blur(10px);
 }
@@ -24,7 +24,7 @@
   font-size: clamp(1.35rem, 1.15rem + 1vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.02em;
-  background: linear-gradient(120deg, #111111, #111111);
+  background: linear-gradient(120deg, var(--pl-text), var(--pl-text));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -32,7 +32,7 @@
 
 .admin-subtext {
   margin: 0;
-  color: #555555;
+  color: var(--pl-muted);
 }
 
 .admin-auth-wrap {
@@ -49,9 +49,9 @@
   max-width: 540px;
   width: 100%;
   padding: 1rem;
-  border: 1px solid #d4d4d4;
+  border: 1px solid var(--pl-border);
   border-radius: 1rem;
-  background: #ffffff;
+  background: var(--pl-surface);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.07);
 }
@@ -60,11 +60,11 @@
 .admin-form input,
 .admin-form select,
 .admin-form textarea {
-  border: 1px solid #cfcfcf;
+  border: 1px solid #9cb6c2;
   border-radius: 0.85rem;
   padding: 0.7rem 0.85rem;
-  background: #ffffff;
-  color: #111111;
+  background: var(--pl-surface);
+  color: var(--pl-text);
 }
 
 .admin-auth-form input:focus,
@@ -72,16 +72,16 @@
 .admin-form select:focus,
 .admin-form textarea:focus {
   outline: 2px solid rgba(70, 70, 70, 0.25);
-  border-color: #3a3a3a;
+  border-color: #2d526f;
 }
 
 .admin-form button,
 .admin-primary-btn {
-  border: 1px solid #111111;
+  border: 1px solid var(--pl-text);
   border-radius: 0.85rem;
   padding: 0.72rem 1rem;
   color: #fff;
-  background: linear-gradient(120deg, #111111, #111111);
+  background: linear-gradient(120deg, var(--pl-text), var(--pl-text));
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
@@ -101,9 +101,9 @@
 
 .admin-card {
   border-radius: 1rem;
-  border: 1px solid #d4d4d4;
+  border: 1px solid var(--pl-border);
   padding: 1rem;
-  background: #ffffff;
+  background: var(--pl-surface);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.07);
   backdrop-filter: blur(8px);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
@@ -123,7 +123,7 @@
 
 .admin-card-label {
   margin: 0;
-  color: #111111;
+  color: var(--pl-text);
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -133,7 +133,7 @@
   margin: 0.5rem 0 0;
   font-size: 1.65rem;
   font-weight: 800;
-  color: #111111;
+  color: var(--pl-text);
 }
 
 .admin-chart-grid {
@@ -144,9 +144,9 @@
 
 .admin-table-wrap {
   overflow-x: auto;
-  border: 1px solid #d4d4d4;
+  border: 1px solid var(--pl-border);
   border-radius: 1rem;
-  background: #ffffff;
+  background: var(--pl-surface);
   box-shadow: 0 10px 24px rgba(14, 116, 144, 0.06);
   backdrop-filter: blur(8px);
 }
@@ -173,10 +173,10 @@
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #111111;
+  color: var(--pl-text);
   position: sticky;
   top: 0;
-  background: #f1f1f1;
+  background: #f8f3df;
   z-index: 2;
 }
 
@@ -205,13 +205,13 @@
   width: 170px;
   border-radius: 999px;
   border: 1px solid rgba(90, 90, 90, 0.3);
-  background: #ededed;
+  background: #f6f2de;
   height: 24px;
 }
 
 .admin-progress-fill {
   height: 100%;
-  background: linear-gradient(120deg, #111111, #2b2b2b);
+  background: linear-gradient(120deg, var(--pl-text), #1e5b6f);
 }
 
 .admin-progress-wrap span {
@@ -221,13 +221,13 @@
   place-items: center;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--pl-surface);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 
 .admin-error {
   margin: 0;
-  color: #666666;
+  color: var(--pl-muted);
 }
 
 .admin-controls {
@@ -241,18 +241,18 @@
   font-size: 0.76rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #111111;
+  color: var(--pl-text);
   font-weight: 700;
 }
 
 .admin-controls select {
   width: 100%;
   margin-top: 0.25rem;
-  border: 1px solid #cfcfcf;
+  border: 1px solid #9cb6c2;
   border-radius: 0.85rem;
   padding: 0.65rem 0.75rem;
-  background: #ffffff;
-  color: #111111;
+  background: var(--pl-surface);
+  color: var(--pl-text);
 }
 
 .admin-weak-list {
@@ -268,8 +268,8 @@
   gap: 0.2rem;
   padding: 0.75rem 0.9rem;
   border-radius: 0.8rem;
-  border: 1px solid #d4d4d4;
-  background: #ffffff;
+  border: 1px solid var(--pl-border);
+  background: var(--pl-surface);
   font-size: 0.9rem;
 }
 
@@ -286,8 +286,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  border: 1px solid #d4d4d4;
-  background: #ffffff;
+  border: 1px solid var(--pl-border);
+  background: var(--pl-surface);
   border-radius: 0.8rem;
   padding: 0.55rem 0.7rem;
 }
@@ -299,11 +299,11 @@
 }
 
 .admin-task-delete-btn {
-  border: 1px solid #111111;
+  border: 1px solid var(--pl-text);
   border-radius: 0.65rem;
   padding: 0.3rem 0.55rem;
-  background: #111111;
-  color: #ffffff;
+  background: var(--pl-text);
+  color: var(--pl-surface);
   font-size: 0.75rem;
   font-weight: 600;
 }
@@ -326,7 +326,7 @@
 
 .dark .admin-card-label,
 .dark .admin-table th {
-  color: #d4d4d4;
+  color: var(--pl-border);
 }
 
 .dark .admin-card-value,
@@ -357,7 +357,7 @@
 }
 
 .dark .admin-progress-wrap span {
-  color: #ffffff;
+  color: var(--pl-surface);
 }
 
 .dark .admin-table-row:hover {
@@ -365,7 +365,7 @@
 }
 
 .dark .admin-controls label {
-  color: #d4d4d4;
+  color: var(--pl-border);
 }
 
 .dark .admin-controls select {
@@ -419,5 +419,6 @@
     min-width: 980px;
   }
 }
+
 
 

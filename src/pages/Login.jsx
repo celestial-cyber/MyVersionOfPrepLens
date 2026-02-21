@@ -1,7 +1,8 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loginStudent } from '../services/authService';
 import '../styles/global.css';
+import illustration from '../../images/Illustration.jpg';
 
 const DEMO_PASSWORD = 'demo123';
 const DEMO_ACCOUNTS = [
@@ -59,7 +60,7 @@ export default function Login() {
     } catch (firebaseError) {
       setError(
         firebaseError.message ||
-        'Login failed. Use demo emails: admin@email.com or student@email.com.'
+          'Login failed. Use demo emails: admin@email.com or student@email.com.'
       );
     } finally {
       setIsSubmitting(false);
@@ -67,89 +68,108 @@ export default function Login() {
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-white text-black transition-colors duration-500 dark:bg-black dark:text-white">
+    <section className="relative min-h-screen overflow-hidden bg-[#f8f3df] text-[#173450] transition-colors duration-500 dark:bg-[#071425] dark:text-[#e2ecf5]">
       <div className="pointer-events-none absolute inset-0 opacity-60 dark:opacity-100">
-        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-neutral-300/30 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-neutral-200/30 blur-3xl dark:bg-neutral-700/20" />
-        <div className="absolute right-0 top-1/3 h-72 w-72 rounded-full bg-neutral-400/20 blur-3xl dark:bg-neutral-600/20" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(120,120,120,0.22)_1px,transparent_0)] [background-size:22px_22px] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(180,180,180,0.12)_1px,transparent_0)]" />
+        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[#ebbe44]/25 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-[#3b91a6]/20 blur-3xl dark:bg-[#1e5b6f]/30" />
+        <div className="absolute right-0 top-1/3 h-72 w-72 rounded-full bg-[#1d3c6a]/25 blur-3xl dark:bg-[#1d3c6a]/40" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(25,61,95,0.18)_1px,transparent_0)] [background-size:22px_22px] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(191,219,254,0.1)_1px,transparent_0)]" />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl items-center justify-center px-5 py-10 sm:px-8">
-        <form
-          onSubmit={handleSubmit}
-          className="grid w-full max-w-lg gap-4 rounded-3xl border border-neutral-300 bg-white/95 p-6 shadow-2xl backdrop-blur-sm sm:p-8 dark:border-neutral-800 dark:bg-black/90"
-        >
-          <div className="flex items-center justify-between">
-            <h2 className="text-4xl font-black tracking-tight text-black dark:text-white">
-              PrepLens
-            </h2>
-            <button
-              type="button"
-              onClick={() => navigate('/', { replace: true })}
-              className="rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-700 transition hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
-            >
-              Back to Home
-            </button>
-          </div>
-
-          <p className="text-sm text-neutral-600 dark:text-neutral-300">
-            Sign in to continue to your learning command center.
-          </p>
-
-          <div className="grid gap-2 rounded-2xl border border-neutral-300 bg-neutral-100 p-3 dark:border-neutral-700 dark:bg-neutral-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-700 dark:text-neutral-300">
-              Quick Demo Access
+        <div className="grid w-full max-w-5xl gap-5 rounded-[2rem] border border-[#bfd4db] bg-[#fffbf0]/95 p-4 shadow-2xl backdrop-blur-sm md:grid-cols-[1fr_1.15fr] md:p-6 dark:border-[#2e4a63] dark:bg-[#0d1f35]/90">
+          <aside className="hidden h-full rounded-[1.5rem] bg-gradient-to-br from-[#1c3154] via-[#2f5978] to-[#173450] p-6 text-white md:grid md:grid-rows-[auto_1fr_auto]">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f4cc61]">
+              PrepLens Visual Theme
             </p>
-          {DEMO_ACCOUNTS.map((account) => (
-            <button
-              key={account.email}
-              type="button"
-              onClick={() => fillDemoCredentials(account.email)}
-              className="grid gap-0.5 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-left transition hover:-translate-y-0.5 hover:border-neutral-500 dark:border-neutral-700 dark:bg-neutral-800"
-            >
-              <strong className="text-sm text-neutral-800 dark:text-neutral-100">{account.label}</strong>
-              <span className="text-xs text-neutral-600 dark:text-neutral-300">{account.destination}</span>
-            </button>
-          ))}
-            <p className="text-xs text-neutral-600 dark:text-neutral-300">Password for demo: {DEMO_PASSWORD}</p>
-          </div>
+            <div className="grid place-items-center">
+              <img
+                src={illustration}
+                alt="Student learning illustration"
+                className="w-full max-w-[300px] rounded-2xl border border-white/15 bg-white/80 object-cover p-2 shadow-2xl"
+              />
+            </div>
+            <p className="text-sm leading-6 text-[#dce9f1]">
+              Track activity, close weak areas, and stay placement ready with clarity.
+            </p>
+          </aside>
 
-          <label htmlFor="login-email" className="text-sm font-semibold text-neutral-800 dark:text-neutral-100">Email</label>
-          <input
-            id="login-email"
-            placeholder="you@example.com"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="rounded-xl border border-neutral-300 bg-white px-3 py-2.5 text-sm text-black outline-none transition focus:border-neutral-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
-          />
-          <label htmlFor="login-password" className="text-sm font-semibold text-neutral-800 dark:text-neutral-100">Password</label>
-          <input
-            id="login-password"
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="rounded-xl border border-neutral-300 bg-white px-3 py-2.5 text-sm text-black outline-none transition focus:border-neutral-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
-          />
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="rounded-xl border border-neutral-700 bg-black px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 dark:border-neutral-300 dark:bg-white dark:text-black disabled:cursor-not-allowed disabled:opacity-70"
+          <form
+            onSubmit={handleSubmit}
+            className="grid gap-4 rounded-[1.5rem] border border-[#bfd4db] bg-white p-6 shadow-xl sm:p-8 dark:border-[#2e4a63] dark:bg-[#0b1a2d]"
           >
-            {isSubmitting ? 'Signing In...' : 'Sign In'}
-          </button>
-          {error && <p className="text-sm text-neutral-700 dark:text-neutral-300">{error}</p>}
-          <p className="text-sm text-neutral-600 dark:text-neutral-300">
-            New user? <Link className="font-semibold text-black underline dark:text-white" to="/register">Create account</Link>
-          </p>
-        </form>
+            <div className="flex items-center justify-between">
+              <h2 className="text-4xl font-black tracking-tight text-[#173450] dark:text-white">PrepLens</h2>
+              <button
+                type="button"
+                onClick={() => navigate('/', { replace: true })}
+                className="rounded-xl border border-[#9cb6c2] bg-white px-3 py-2 text-xs font-semibold text-[#234a6a] transition hover:border-[#1e5b6f] hover:bg-[#1e5b6f] hover:text-white dark:border-[#2e4a63] dark:bg-[#0d1f35] dark:text-[#dce9f1] dark:hover:bg-[#1e5b6f] dark:hover:text-white"
+              >
+                Back to Home
+              </button>
+            </div>
+
+            <p className="text-sm text-[#36546f] dark:text-[#dce9f1]">
+              Sign in to continue to your learning command center.
+            </p>
+
+            <div className="grid gap-2 rounded-2xl border border-[#bfd4db] bg-[#f6f2de] p-3 dark:border-[#2e4a63] dark:bg-[#132a45]">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#234a6a] dark:text-[#dce9f1]">
+                Quick Demo Access
+              </p>
+              {DEMO_ACCOUNTS.map((account) => (
+                <button
+                  key={account.email}
+                  type="button"
+                  onClick={() => fillDemoCredentials(account.email)}
+                  className="grid gap-0.5 rounded-xl border border-[#bfd4db] bg-white px-3 py-2 text-left transition hover:-translate-y-0.5 hover:border-[#1e5b6f] dark:border-[#2e4a63] dark:bg-[#0d1f35]"
+                >
+                  <strong className="text-sm text-[#173450] dark:text-[#eff6ff]">{account.label}</strong>
+                  <span className="text-xs text-[#36546f] dark:text-[#dce9f1]">{account.destination}</span>
+                </button>
+              ))}
+              <p className="text-xs text-[#36546f] dark:text-[#dce9f1]">Password for demo: {DEMO_PASSWORD}</p>
+            </div>
+
+            <label htmlFor="login-email" className="text-sm font-semibold text-[#173450] dark:text-[#eff6ff]">
+              Email
+            </label>
+            <input
+              id="login-email"
+              placeholder="you@example.com"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="rounded-xl border border-[#9cb6c2] bg-white px-3 py-2.5 text-sm text-[#102337] outline-none transition focus:border-[#1e5b6f] dark:border-[#2e4a63] dark:bg-[#0d1f35] dark:text-white"
+            />
+            <label htmlFor="login-password" className="text-sm font-semibold text-[#173450] dark:text-[#eff6ff]">
+              Password
+            </label>
+            <input
+              id="login-password"
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="rounded-xl border border-[#9cb6c2] bg-white px-3 py-2.5 text-sm text-[#102337] outline-none transition focus:border-[#1e5b6f] dark:border-[#2e4a63] dark:bg-[#0d1f35] dark:text-white"
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="rounded-xl border border-[#173450] bg-[#173450] px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#1e5b6f] hover:text-white dark:border-[#f4cc61] dark:bg-[#f4cc61] dark:text-[#102337] dark:hover:bg-[#e1b232] dark:hover:text-[#102337] disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              {isSubmitting ? 'Signing In...' : 'Sign In'}
+            </button>
+            {error && <p className="text-sm text-[#8b4513] dark:text-[#f4cc61]">{error}</p>}
+            <p className="text-sm text-[#36546f] dark:text-[#dce9f1]">
+              New user?{' '}
+              <Link className="font-semibold text-[#173450] underline dark:text-[#f4cc61]" to="/register">
+                Create account
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </section>
   );
 }
-
-
-
-

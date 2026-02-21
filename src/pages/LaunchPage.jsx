@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -116,46 +116,46 @@ export default function LaunchPage() {
   );
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-white text-black transition-colors duration-500 dark:bg-black dark:text-white">
+    <div className="relative min-h-screen overflow-hidden bg-[#f8f3df] text-[#173450] transition-colors duration-500 dark:bg-[#071425] dark:text-[#e2ecf5]">
       <AnimatePresence>
         {showSplash ? (
           <motion.div
             key="splash"
-            className="fixed inset-0 z-50 grid place-items-center bg-black"
+            className="fixed inset-0 z-50 grid place-items-center bg-[#071425]"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7 }}
           >
             <motion.div
-              className="rounded-2xl border border-neutral-700 bg-black/85 px-10 py-8 text-center shadow-glow"
+              className="rounded-2xl border border-[#2e4a63] bg-[#0d1f35]/90 px-10 py-8 text-center shadow-glow"
               initial={{ scale: 0.9, opacity: 0.4 }}
               animate={{ scale: [0.9, 1.03, 1], opacity: 1 }}
               transition={{ duration: 1.2, ease: 'easeInOut' }}
             >
-              <p className="text-xs uppercase tracking-[0.35em] text-neutral-300">Loading</p>
-              <h1 className="mt-3 text-4xl font-black tracking-tight text-white sm:text-5xl">PrepLens</h1>
-              <p className="mt-2 text-sm text-neutral-300">Placement Intelligence Platform</p>
+              <p className="text-xs uppercase tracking-[0.35em] text-[#dce9f1]">Loading</p>
+              <h1 className="mt-3 text-4xl font-black tracking-tight text-[#f4cc61] sm:text-5xl">PrepLens</h1>
+              <p className="mt-2 text-sm text-[#dce9f1]">Placement Intelligence Platform</p>
             </motion.div>
           </motion.div>
         ) : null}
       </AnimatePresence>
 
       <div className="pointer-events-none absolute inset-0 opacity-60 dark:opacity-100">
-        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-neutral-300/30 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-neutral-200/30 blur-3xl" />
-        <div className="absolute right-0 top-1/3 h-72 w-72 rounded-full bg-neutral-400/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(120,120,120,0.22)_1px,transparent_0)] [background-size:22px_22px] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(180,180,180,0.12)_1px,transparent_0)]" />
+        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[#ebbe44]/25 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-[#3b91a6]/20 blur-3xl" />
+        <div className="absolute right-0 top-1/3 h-72 w-72 rounded-full bg-[#1d3c6a]/25 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(25,61,95,0.18)_1px,transparent_0)] [background-size:22px_22px] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(191,219,254,0.1)_1px,transparent_0)]" />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col px-5 pb-10 pt-6 sm:px-8 lg:px-12">
-        <header className="flex items-center justify-between rounded-2xl border border-neutral-300/70 bg-white/70 px-4 py-3 shadow-lg backdrop-blur md:px-6 dark:border-neutral-800 dark:bg-neutral-900/75">
+        <header className="flex items-center justify-between rounded-2xl border border-[#bfd4db] bg-[#fffbf0]/85 px-4 py-3 shadow-lg backdrop-blur md:px-6 dark:border-[#2e4a63] dark:bg-[#0d1f35]/85">
           <div className="flex items-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-neutral-900 to-neutral-700 text-white shadow-lg shadow-black/30 dark:from-neutral-100 dark:to-neutral-300 dark:text-black">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-[#173450] to-[#1e5b6f] text-white shadow-lg shadow-[#173450]/35 dark:from-[#f4cc61] dark:to-[#e1b232] dark:text-[#173450]">
               <span className="text-lg font-black">P</span>
             </div>
             <div>
               <p className="text-lg font-extrabold tracking-tight">PrepLens</p>
-              <p className="text-xs text-neutral-600 dark:text-neutral-300">Turning Preparation Into Placement Readiness</p>
+              <p className="text-xs text-[#3f607b] dark:text-[#dce9f1]">Turning Preparation Into Placement Readiness</p>
             </div>
           </div>
 
@@ -163,28 +163,28 @@ export default function LaunchPage() {
             type="button"
             aria-label="Toggle dark mode"
             onClick={() => setDarkMode((prev) => !prev)}
-            className="rounded-xl border border-neutral-300 bg-white/80 p-2.5 text-neutral-700 shadow-sm transition hover:-translate-y-0.5 hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:border-neutral-300"
+            className="rounded-xl border border-[#9cb6c2] bg-white p-2.5 text-[#234a6a] shadow-sm transition hover:-translate-y-0.5 hover:border-[#1e5b6f] hover:bg-[#1e5b6f] hover:text-white dark:border-[#2e4a63] dark:bg-[#112844] dark:text-[#dce9f1] dark:hover:border-[#3b91a6]"
           >
             {darkMode ? <SunIcon /> : <MoonIcon />}
           </button>
         </header>
 
         <main className="mt-8 flex flex-1 flex-col gap-8">
-          <section className="rounded-3xl border border-neutral-300/70 bg-white/75 p-7 shadow-2xl backdrop-blur-sm sm:p-10 dark:border-neutral-800 dark:bg-neutral-900/70">
+          <section className="rounded-3xl border border-[#bfd4db] bg-[#fffbf0]/85 p-7 shadow-2xl backdrop-blur-sm sm:p-10 dark:border-[#2e4a63] dark:bg-[#0d1f35]/80">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, ease: 'easeOut' }}
               className="mx-auto max-w-3xl text-center"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-neutral-600 dark:text-neutral-300">Smart Placement Tracker</p>
-              <h1 className="mt-4 bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-500 dark:from-neutral-100 dark:via-neutral-300 dark:to-neutral-500 bg-clip-text text-5xl font-black leading-tight text-transparent sm:text-6xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#3f607b] dark:text-[#dce9f1]">Smart Placement Tracker</p>
+              <h1 className="mt-4 bg-gradient-to-r from-[#173450] via-[#1e5b6f] to-[#ebbe44] dark:from-[#f4cc61] dark:via-[#dce9f1] dark:to-[#3b91a6] bg-clip-text text-5xl font-black leading-tight text-transparent sm:text-6xl">
                 PrepLens
               </h1>
-              <h2 className="mt-4 text-xl font-semibold text-neutral-800 sm:text-2xl dark:text-neutral-100">
+              <h2 className="mt-4 text-xl font-semibold text-[#173450] sm:text-2xl dark:text-[#eff6ff]">
                 Turning Preparation Into Placement Readiness
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-neutral-600 sm:text-base dark:text-neutral-300">
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#3f607b] sm:text-base dark:text-[#dce9f1]">
                 Track progress, measure readiness, and mentor smarter with real-time analytics.
               </p>
             </motion.div>
@@ -198,7 +198,7 @@ export default function LaunchPage() {
               <motion.div whileHover={{ y: -5, scale: 1.015 }} whileTap={{ scale: 0.985 }}>
                 <Link
                   to="/admin"
-                  className="flex items-center justify-center gap-3 rounded-2xl border border-neutral-700 bg-neutral-800 px-6 py-4 text-base font-semibold text-white shadow-xl shadow-black/35 transition hover:bg-neutral-900 hover:text-white active:bg-neutral-500 active:text-white dark:bg-white dark:border-neutral-200 dark:text-black dark:hover:bg-neutral-100 dark:hover:text-black dark:active:bg-neutral-300 dark:active:text-black"
+                  className="flex items-center justify-center gap-3 rounded-2xl border border-[#173450] bg-[#173450] px-6 py-4 text-base font-semibold text-white shadow-xl shadow-[#173450]/35 transition hover:bg-[#1e5b6f] hover:text-white active:bg-[#3b91a6] active:text-white dark:bg-[#f4cc61] dark:border-[#f4cc61] dark:text-[#102337] dark:hover:bg-[#e1b232] dark:hover:text-[#102337] dark:active:bg-[#d29e1d] dark:active:text-[#102337]"
                 >
                   <AdminIcon />
                   Admin / Trainer Login
@@ -208,7 +208,7 @@ export default function LaunchPage() {
               <motion.div whileHover={{ y: -5, scale: 1.015 }} whileTap={{ scale: 0.985 }}>
                 <Link
                   to="/student"
-                  className="flex items-center justify-center gap-3 rounded-2xl border border-neutral-300 bg-white px-6 py-4 text-base font-semibold text-neutral-900 shadow-xl transition hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-neutral-300 dark:hover:text-white"
+                  className="flex items-center justify-center gap-3 rounded-2xl border border-[#9cb6c2] bg-white px-6 py-4 text-base font-semibold text-[#173450] shadow-xl transition hover:border-[#1e5b6f] hover:bg-[#1e5b6f] hover:text-white dark:border-[#2e4a63] dark:bg-[#112844] dark:text-[#dce9f1] dark:hover:border-[#3b91a6] dark:hover:text-[#f4cc61]"
                 >
                   <StudentIcon />
                   Student Login
@@ -217,7 +217,7 @@ export default function LaunchPage() {
             </motion.div>
           </section>
 
-          <section className="rounded-3xl border border-neutral-300/70 bg-white/75 p-7 shadow-xl backdrop-blur-sm sm:p-8 dark:border-neutral-800 dark:bg-neutral-900/70">
+          <section className="rounded-3xl border border-[#bfd4db] bg-[#fffbf0]/85 p-7 shadow-xl backdrop-blur-sm sm:p-8 dark:border-[#2e4a63] dark:bg-[#0d1f35]/80">
             <h3 className="text-center text-2xl font-bold">Features Preview</h3>
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               {features.map((feature, index) => {
@@ -230,15 +230,15 @@ export default function LaunchPage() {
                     viewport={{ once: true, amount: 0.35 }}
                     transition={{ duration: 0.45, delay: index * 0.08 }}
                     whileHover={{ y: -4 }}
-                    className="rounded-2xl border border-neutral-300/80 bg-neutral-50/70 p-5 shadow-md transition dark:border-neutral-700 dark:bg-neutral-800/70"
+                    className="rounded-2xl border border-[#bfd4db] bg-[#f6f2de]/70 p-5 shadow-md transition dark:border-[#2e4a63] dark:bg-[#112844]/70"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="rounded-xl bg-gradient-to-br from-neutral-900 to-neutral-700 p-2.5 text-white shadow-lg shadow-black/30">
+                      <div className="rounded-xl bg-gradient-to-br from-[#173450] to-[#1e5b6f] p-2.5 text-white shadow-lg shadow-[#173450]/35">
                         <Icon />
                       </div>
                       <div>
                         <h4 className="text-base font-semibold">{feature.title}</h4>
-                        <p className="mt-1 text-sm leading-6 text-neutral-600 dark:text-neutral-300">{feature.description}</p>
+                        <p className="mt-1 text-sm leading-6 text-[#3f607b] dark:text-[#dce9f1]">{feature.description}</p>
                       </div>
                     </div>
                   </motion.article>
@@ -247,24 +247,25 @@ export default function LaunchPage() {
             </div>
           </section>
 
-          <section className="rounded-3xl border border-neutral-300/70 bg-gradient-to-br from-white/90 to-neutral-100/90 p-7 shadow-xl sm:p-8 dark:border-neutral-800 dark:from-neutral-900/80 dark:to-neutral-800/80">
+          <section className="rounded-3xl border border-[#bfd4db] bg-gradient-to-br from-[#fffbf0]/90 to-[#f6f2de]/90 p-7 shadow-xl sm:p-8 dark:border-[#2e4a63] dark:from-[#0d1f35]/80 dark:to-[#112844]/80">
             <h3 className="text-2xl font-bold">About PrepLens</h3>
-            <p className="mt-3 max-w-4xl text-sm leading-7 text-neutral-700 sm:text-base dark:text-neutral-300">
+            <p className="mt-3 max-w-4xl text-sm leading-7 text-[#36546f] sm:text-base dark:text-[#dce9f1]">
               PrepLens helps students track preparation with clarity while enabling trainers to monitor placement readiness using real performance data, making every mentoring decision faster, objective, and impact-focused.
             </p>
           </section>
         </main>
 
         <footer className="mt-9 text-center">
-          <div className="mx-auto mb-4 h-px w-full max-w-2xl bg-gradient-to-r from-transparent via-neutral-500 to-transparent" />
-          <p className="text-sm tracking-wide text-neutral-700 dark:text-neutral-300">
-            Built with passion by <span className="font-semibold text-black dark:text-white">Team Celestial Voyagers</span>
+          <div className="mx-auto mb-4 h-px w-full max-w-2xl bg-gradient-to-r from-transparent via-[#3b91a6] to-transparent" />
+          <p className="text-sm tracking-wide text-[#36546f] dark:text-[#dce9f1]">
+            Built with passion by <span className="font-semibold text-[#173450] dark:text-[#eff6ff]">Team Celestial Voyagers</span>
           </p>
         </footer>
       </div>
     </div>
   );
 }
+
 
 
 
