@@ -3,16 +3,25 @@ function formatLastActive(lastActiveAt) {
   return new Date(lastActiveAt).toLocaleDateString();
 }
 
-export default function StudentTable({ students = [], onSelect }) {
+function formatRegisteredAt(createdAt) {
+  if (!createdAt) return 'N/A';
+  return new Date(createdAt).toLocaleDateString();
+}
+
+export default function StudentTable({ students = [], onSelect, scrollable = false }) {
+  const tableWrapClass = scrollable ? 'admin-table-wrap admin-table-wrap-scroll' : 'admin-table-wrap';
   return (
-    <div className="admin-table-wrap">
+    <div className={tableWrapClass}>
       <table className="admin-table">
         <thead>
           <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Target</th>
+            <th>Registered Via</th>
+            <th>Registered On</th>
             <th>Total Activities</th>
+            <th>Streak</th>
+            <th>Tasks Done</th>
             <th>Progress</th>
             <th>Last Active</th>
             <th>Latest Activity</th>
@@ -32,8 +41,11 @@ export default function StudentTable({ students = [], onSelect }) {
               >
                 <td>{student.name}</td>
                 <td>{student.email || 'N/A'}</td>
-                <td>{student.targetExam || 'General'}</td>
+                <td>{student.registrationType || 'Portal'}</td>
+                <td>{formatRegisteredAt(student.createdAt)}</td>
                 <td>{student.totalActivities ?? 0}</td>
+                <td>{student.streakDays ?? 0} days</td>
+                <td>{student.completedTasks ?? 0}</td>
                 <td>
                   <div className="admin-progress-wrap">
                     <div

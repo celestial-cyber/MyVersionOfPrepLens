@@ -6,42 +6,48 @@ import {
   getDocs,
   onSnapshot,
   query,
+  serverTimestamp,
   where,
 } from 'firebase/firestore';
 import { db } from '../../../firebase';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const LOCAL_USERS_KEY = 'preplens_local_users';
+const LOCAL_TASKS_KEY = 'preplens_local_tasks';
+const LOCAL_ACTIVITIES_KEY = 'preplens_local_activities';
+const CATEGORY_KEYS = ['aptitude', 'technical', 'verbal', 'softskills'];
+const GLOBAL_TEST_SCOPE = '__all_students__';
+const TASK_STATUS = ['pending', 'in_progress', 'completed'];
 
 const DEMO_ACTIVITY_MAP = {
   'demo-student-uid': [
-    { id: 'a1', day: 'Mon', hours: 2.5, topic: 'Algebra drill', createdAt: Date.now() - DAY_MS },
-    { id: 'a2', day: 'Tue', hours: 1.75, topic: 'Reading comprehension', createdAt: Date.now() - 2 * DAY_MS },
-    { id: 'a3', day: 'Thu', hours: 2, topic: 'Mock test review', createdAt: Date.now() - 4 * DAY_MS },
+    { id: 'a1', day: 'Mon', hours: 2.5, topic: 'Algebra drill', category: 'technical', createdAt: Date.now() - DAY_MS },
+    { id: 'a2', day: 'Tue', hours: 1.75, topic: 'Reading comprehension', category: 'verbal', createdAt: Date.now() - 2 * DAY_MS },
+    { id: 'a3', day: 'Thu', hours: 2, topic: 'Mock test review', category: 'aptitude', createdAt: Date.now() - 4 * DAY_MS },
   ],
   'demo-student-uid-2': [
-    { id: 'b1', day: 'Mon', hours: 3, topic: 'Physics numericals', createdAt: Date.now() - DAY_MS },
-    { id: 'b2', day: 'Wed', hours: 2.25, topic: 'Chemistry revision', createdAt: Date.now() - 3 * DAY_MS },
-    { id: 'b3', day: 'Fri', hours: 2.5, topic: 'Formula recap', createdAt: Date.now() - 5 * DAY_MS },
+    { id: 'b1', day: 'Mon', hours: 3, topic: 'Physics numericals', category: 'technical', createdAt: Date.now() - DAY_MS },
+    { id: 'b2', day: 'Wed', hours: 2.25, topic: 'Chemistry revision', category: 'technical', createdAt: Date.now() - 3 * DAY_MS },
+    { id: 'b3', day: 'Fri', hours: 2.5, topic: 'Formula recap', category: 'aptitude', createdAt: Date.now() - 5 * DAY_MS },
   ],
   'demo-student-uid-3': [
-    { id: 'c1', day: 'Tue', hours: 1, topic: 'Vocabulary', createdAt: Date.now() - 6 * DAY_MS },
-    { id: 'c2', day: 'Thu', hours: 1.5, topic: 'History notes', createdAt: Date.now() - 7 * DAY_MS },
+    { id: 'c1', day: 'Tue', hours: 1, topic: 'Vocabulary', category: 'verbal', createdAt: Date.now() - 6 * DAY_MS },
+    { id: 'c2', day: 'Thu', hours: 1.5, topic: 'History notes', category: 'softskills', createdAt: Date.now() - 7 * DAY_MS },
   ],
   'demo-student-uid-4': [
-    { id: 'd1', day: 'Sun', hours: 2.2, topic: 'Probability practice', createdAt: Date.now() - 2 * DAY_MS },
-    { id: 'd2', day: 'Tue', hours: 2.8, topic: 'Mock paper analysis', createdAt: Date.now() - 5 * DAY_MS },
-    { id: 'd3', day: 'Thu', hours: 1.4, topic: 'Error notebook revision', createdAt: Date.now() - 8 * DAY_MS },
+    { id: 'd1', day: 'Sun', hours: 2.2, topic: 'Probability practice', category: 'aptitude', createdAt: Date.now() - 2 * DAY_MS },
+    { id: 'd2', day: 'Tue', hours: 2.8, topic: 'Mock paper analysis', category: 'technical', createdAt: Date.now() - 5 * DAY_MS },
+    { id: 'd3', day: 'Thu', hours: 1.4, topic: 'Error notebook revision', category: 'softskills', createdAt: Date.now() - 8 * DAY_MS },
   ],
   'demo-student-uid-5': [
-    { id: 'e1', day: 'Mon', hours: 0.9, topic: 'Biology diagrams', createdAt: Date.now() - 4 * DAY_MS },
-    { id: 'e2', day: 'Wed', hours: 1.2, topic: 'Organic chemistry recap', createdAt: Date.now() - 9 * DAY_MS },
+    { id: 'e1', day: 'Mon', hours: 0.9, topic: 'Biology diagrams', category: 'technical', createdAt: Date.now() - 4 * DAY_MS },
+    { id: 'e2', day: 'Wed', hours: 1.2, topic: 'Organic chemistry recap', category: 'verbal', createdAt: Date.now() - 9 * DAY_MS },
   ],
   'demo-student-uid-6': [
-    { id: 'f1', day: 'Sat', hours: 3.5, topic: 'Quant aptitude marathon', createdAt: Date.now() - DAY_MS },
-    { id: 'f2', day: 'Thu', hours: 2.7, topic: 'Logical reasoning set', createdAt: Date.now() - 3 * DAY_MS },
-    { id: 'f3', day: 'Tue', hours: 2.1, topic: 'Verbal section timed test', createdAt: Date.now() - 6 * DAY_MS },
-    { id: 'f4', day: 'Sun', hours: 1.5, topic: 'Interview prep notes', createdAt: Date.now() - 10 * DAY_MS },
+    { id: 'f1', day: 'Sat', hours: 3.5, topic: 'Quant aptitude marathon', category: 'aptitude', createdAt: Date.now() - DAY_MS },
+    { id: 'f2', day: 'Thu', hours: 2.7, topic: 'Logical reasoning set', category: 'technical', createdAt: Date.now() - 3 * DAY_MS },
+    { id: 'f3', day: 'Tue', hours: 2.1, topic: 'Verbal section timed test', category: 'verbal', createdAt: Date.now() - 6 * DAY_MS },
+    { id: 'f4', day: 'Sun', hours: 1.5, topic: 'Interview prep notes', category: 'softskills', createdAt: Date.now() - 10 * DAY_MS },
   ],
 };
 
@@ -133,13 +139,33 @@ function toMillis(value) {
 
 function normalizeActivity(id, data) {
   const createdAt = toMillis(data.createdAt) || toMillis(data.date);
+  const rawCategory = String(data.category || 'technical').toLowerCase();
+  const category = rawCategory === 'soft-skills' ? 'softskills' : rawCategory;
   return {
     id,
     userId: data.userId || data.uid || '',
     day: data.day || (createdAt ? new Date(createdAt).toLocaleDateString() : 'N/A'),
     hours: toNumber(data.hours, 0),
     topic: data.topic || 'General study',
+    category: CATEGORY_KEYS.includes(category) ? category : 'technical',
     createdAt,
+  };
+}
+
+function normalizeTask(id, data) {
+  const fallbackStatus = data.completed ? 'completed' : 'pending';
+  const status = TASK_STATUS.includes(String(data.status || '').toLowerCase())
+    ? String(data.status).toLowerCase()
+    : fallbackStatus;
+  return {
+    id,
+    userId: data.userId || '',
+    title: data.title || 'Untitled task',
+    status,
+    completed: status === 'completed',
+    scope: data.scope || 'single',
+    updatedAt: toMillis(data.updatedAt) || null,
+    createdAt: toMillis(data.createdAt) || null,
   };
 }
 
@@ -162,6 +188,16 @@ function getDemoActivitiesByUserId(userId) {
     .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 }
 
+function getCategoryTotals(activities = []) {
+  const totals = { aptitude: 0, technical: 0, verbal: 0, softskills: 0 };
+  activities.forEach((activity) => {
+    const key = String(activity.category || 'technical').toLowerCase();
+    if (totals[key] === undefined) return;
+    totals[key] += toNumber(activity.hours, 0);
+  });
+  return totals;
+}
+
 function canUseStorage() {
   return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
 }
@@ -177,23 +213,65 @@ function getLocalUsers() {
   }
 }
 
+function getLocalActivities() {
+  if (!canUseStorage()) return [];
+  try {
+    const raw = window.localStorage.getItem(LOCAL_ACTIVITIES_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function getLocalTasks() {
+  if (!canUseStorage()) return [];
+  try {
+    const raw = window.localStorage.getItem(LOCAL_TASKS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function getCompletedTaskCount(userId) {
+  if (!userId) return 0;
+  return getLocalTasks().reduce((count, task) => {
+    const matchesUser = task.userId === userId || task.userId === GLOBAL_TEST_SCOPE || task.scope === 'all';
+    if (!matchesUser) return count;
+    const status = String(task.status || '').toLowerCase();
+    const isCompleted = status ? status === 'completed' : Boolean(task.completed);
+    return isCompleted ? count + 1 : count;
+  }, 0);
+}
+
 function getLocalStudents() {
-  return getLocalUsers().map((user) => ({
-    id: user.uid || `local-${String(user.email || '').toLowerCase()}`,
-    uid: user.uid || `local-${String(user.email || '').toLowerCase()}`,
-    name: user.displayName || user.name || 'Student',
-    email: String(user.email || '').toLowerCase(),
-    targetExam: user.targetExam || 'General',
-    grade: user.grade || '',
-    readinessScore: toNumber(user.readinessScore, 0),
-    streakDays: toNumber(user.streakDays, 0),
-    completedTasks: toNumber(user.completedTasks, 0),
-    totalActivities: 0,
-    lastActiveAt: null,
-    lastActivityTopic: 'No activity logged',
-    createdAt: toMillis(user.createdAt),
-    registrationType: 'Portal',
-  }));
+  const localActivities = getLocalActivities();
+  return getLocalUsers().map((user) => {
+    const uid = user.uid || `local-${String(user.email || '').toLowerCase()}`;
+    const activities = localActivities
+      .filter((item) => item.userId === uid)
+      .map((item) => normalizeActivity(item.id || `local-${item.createdAt || Date.now()}`, item))
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    return {
+      id: uid,
+      uid,
+      name: user.displayName || user.name || 'Student',
+      email: String(user.email || '').toLowerCase(),
+      targetExam: user.targetExam || 'General',
+      grade: user.grade || '',
+      readinessScore: toNumber(user.readinessScore, 0),
+      streakDays: toNumber(user.streakDays, 0),
+      completedTasks: Math.max(toNumber(user.completedTasks, 0), getCompletedTaskCount(uid)),
+      totalActivities: activities.length,
+      lastActiveAt: activities[0]?.createdAt || toMillis(user.lastActiveAt),
+      lastActivityTopic: activities[0]?.topic || 'No activity logged',
+      categoryTotals: getCategoryTotals(activities),
+      createdAt: toMillis(user.createdAt),
+      registrationType: 'Portal',
+    };
+  });
 }
 
 function getDemoStudents() {
@@ -201,9 +279,11 @@ function getDemoStudents() {
     const activities = getDemoActivitiesByUserId(student.uid);
     return {
       ...student,
+      completedTasks: Math.max(student.completedTasks, getCompletedTaskCount(student.uid)),
       totalActivities: activities.length,
       lastActiveAt: activities[0]?.createdAt || null,
       lastActivityTopic: activities[0]?.topic || 'No activity logged',
+      categoryTotals: getCategoryTotals(activities),
       createdAt: Date.now() - (30 - index * 3) * DAY_MS,
       registrationType: 'Demo',
     };
@@ -225,7 +305,12 @@ function getDemoStudents() {
 export async function getActivitiesByUserId(userId) {
   if (!userId) return [];
   if (DEMO_ACTIVITY_MAP[userId]) return getDemoActivitiesByUserId(userId);
-  if (!db) return [];
+  if (!db) {
+    return getLocalActivities()
+      .filter((item) => item.userId === userId)
+      .map((item) => normalizeActivity(item.id || `local-${item.createdAt || Date.now()}`, item))
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  }
 
   const activitiesRef = collection(db, 'activities');
   const [byUserId, byLegacyUid] = await Promise.all([
@@ -268,6 +353,7 @@ export async function getAllStudents() {
           totalActivities: activities.length,
           lastActiveAt: activities[0]?.createdAt || null,
           lastActivityTopic: activities[0]?.topic || 'No activity logged',
+          categoryTotals: getCategoryTotals(activities),
           createdAt: toMillis(profile.createdAt),
           registrationType: 'Portal',
         };
@@ -303,12 +389,15 @@ export function subscribeAllStudents(callback, onError) {
   );
 }
 
-export async function createAdminTask({ userId, title, completed = false }) {
-  if (!db) {
-    throw new Error('Firebase is not configured. Add VITE_FIREBASE_* values in your .env file.');
-  }
-
+export async function createAdminTask({ userId, title, completed = false, status = 'pending', createdBy = 'admin' }) {
   const normalizedTitle = String(title || '').trim();
+  const normalizedUserId = String(userId || '').trim();
+  const isGlobal = normalizedUserId === GLOBAL_TEST_SCOPE;
+  const normalizedStatus = TASK_STATUS.includes(String(status || '').toLowerCase())
+    ? String(status).toLowerCase()
+    : completed
+      ? 'completed'
+      : 'pending';
   if (!userId) {
     throw new Error('Please select a student.');
   }
@@ -316,9 +405,81 @@ export async function createAdminTask({ userId, title, completed = false }) {
     throw new Error('Task title is required.');
   }
 
+  if (!db) {
+    if (!canUseStorage()) {
+      throw new Error('Unable to save task in this environment.');
+    }
+    const raw = window.localStorage.getItem(LOCAL_TASKS_KEY);
+    const existing = raw ? JSON.parse(raw) : [];
+    const next = Array.isArray(existing) ? existing : [];
+    next.push(
+      {
+        id: `local-task-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        userId: normalizedUserId,
+        title: normalizedTitle,
+        completed: normalizedStatus === 'completed',
+        status: normalizedStatus,
+        scope: isGlobal ? 'all' : 'single',
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        createdBy,
+      }
+    );
+    window.localStorage.setItem(LOCAL_TASKS_KEY, JSON.stringify(next));
+    return { id: next[next.length - 1].id };
+  }
+
+  if (isGlobal) {
+    return addDoc(collection(db, 'tasks'), {
+      userId: GLOBAL_TEST_SCOPE,
+      title: normalizedTitle,
+      completed: normalizedStatus === 'completed',
+      status: normalizedStatus,
+      scope: 'all',
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+      createdBy,
+    });
+  }
+
   return addDoc(collection(db, 'tasks'), {
-    userId,
+    userId: normalizedUserId,
     title: normalizedTitle,
-    completed: Boolean(completed),
+    completed: normalizedStatus === 'completed',
+    status: normalizedStatus,
+    scope: 'single',
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    createdBy,
   });
+}
+
+export async function getTasksByUserId(userId) {
+  if (!userId) return [];
+
+  if (!db) {
+    if (!canUseStorage()) return [];
+    try {
+      const raw = window.localStorage.getItem(LOCAL_TASKS_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      const items = Array.isArray(parsed) ? parsed : [];
+      return items
+        .filter((task) => task.userId === userId || task.userId === GLOBAL_TEST_SCOPE || task.scope === 'all')
+        .map((task) => normalizeTask(task.id || `local-${task.title}`, task))
+        .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+    } catch {
+      return [];
+    }
+  }
+
+  const tasksRef = collection(db, 'tasks');
+  const [personal, global] = await Promise.all([
+    getDocs(query(tasksRef, where('userId', '==', userId))),
+    getDocs(query(tasksRef, where('userId', '==', GLOBAL_TEST_SCOPE))),
+  ]);
+
+  return mergeById([
+    ...personal.docs.map((item) => normalizeTask(item.id, item.data())),
+    ...global.docs.map((item) => normalizeTask(item.id, item.data())),
+  ]).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
 }

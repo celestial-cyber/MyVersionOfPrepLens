@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import useThemePreference from '../../hooks/useThemePreference';
 
@@ -66,46 +66,46 @@ export default function DashboardShell({
   const initials = useMemo(() => getInitials(userName), [userName]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-100 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+    <div className="relative min-h-screen overflow-hidden bg-white text-black transition-colors duration-300 dark:bg-black dark:text-white">
       <div className="pointer-events-none absolute inset-0 opacity-70 dark:opacity-100">
-        <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-indigo-400/20 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-fuchsia-400/20 blur-3xl" />
-        <div className="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-violet-400/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(99,102,241,0.16)_1px,transparent_0)] [background-size:20px_20px]" />
+        <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-neutral-300/35 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-neutral-200/30 blur-3xl dark:bg-neutral-700/25" />
+        <div className="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-neutral-400/20 blur-3xl dark:bg-neutral-600/25" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(64,64,64,0.16)_1px,transparent_0)] [background-size:20px_20px]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">
-        <header className="sticky top-4 z-30 mb-6 flex items-center justify-between rounded-2xl border border-white/60 bg-white/70 px-3 py-3 shadow-lg backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-900/70 sm:px-5">
+        <header className="sticky top-4 z-30 mb-6 flex items-center justify-between rounded-2xl border border-neutral-200 bg-white/95 px-3 py-3 shadow-lg backdrop-blur-xl dark:border-neutral-800 dark:bg-black/90 sm:px-5">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setSidebarOpen((prev) => !prev)}
-              className="inline-flex rounded-xl border border-indigo-200 bg-white/70 p-2 text-indigo-600 transition hover:bg-indigo-50 lg:hidden dark:border-slate-700 dark:bg-slate-900 dark:text-indigo-300"
+              className="inline-flex rounded-xl border border-neutral-300 bg-white p-2 text-neutral-700 transition hover:bg-neutral-100 lg:hidden dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
               aria-label="Toggle sidebar"
             >
               <MenuIcon />
             </button>
 
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-sm font-bold text-white shadow-lg shadow-indigo-500/40">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-neutral-900 text-sm font-bold text-white shadow-lg dark:bg-white dark:text-black">
               PL
             </div>
             <div>
-              <p className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-lg font-black text-transparent">
+              <p className="text-lg font-black text-black dark:text-white">
                 {roleTitle}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-300">{roleTagline}</p>
+              <p className="text-xs text-neutral-500 dark:text-neutral-300">{roleTagline}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden rounded-xl border border-indigo-200 bg-indigo-50/80 px-3 py-2 text-xs font-medium text-indigo-700 sm:block dark:border-indigo-400/25 dark:bg-indigo-500/10 dark:text-indigo-200">
+            <div className="hidden rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-xs font-medium text-neutral-700 sm:block dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200">
               {streakText}
             </div>
 
             <button
               type="button"
               aria-label="Notifications"
-              className="rounded-xl border border-slate-200 bg-white/80 p-2 text-slate-600 transition hover:-translate-y-0.5 hover:border-indigo-300 hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+              className="rounded-xl border border-neutral-300 bg-white p-2 text-neutral-700 transition hover:-translate-y-0.5 hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
             >
               <BellIcon />
             </button>
@@ -114,12 +114,12 @@ export default function DashboardShell({
               type="button"
               onClick={() => setIsDarkMode((prev) => !prev)}
               aria-label="Toggle theme"
-              className="rounded-xl border border-slate-200 bg-white/80 p-2 text-slate-600 transition hover:-translate-y-0.5 hover:border-indigo-300 hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+              className="rounded-xl border border-neutral-300 bg-white p-2 text-neutral-700 transition hover:-translate-y-0.5 hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
             >
               {isDarkMode ? <SunIcon /> : <MoonIcon />}
             </button>
 
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 text-sm font-semibold text-white shadow-lg shadow-indigo-500/35">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-neutral-800 text-sm font-semibold text-white shadow-lg dark:bg-neutral-200 dark:text-black">
               {initials}
             </div>
           </div>
@@ -128,17 +128,17 @@ export default function DashboardShell({
         <div className="grid items-start gap-6 lg:grid-cols-[260px_1fr]">
           <aside
             className={[
-              'fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] transform overflow-y-auto border-r border-white/60 bg-white/75 p-5 shadow-xl backdrop-blur-xl transition-transform duration-300 dark:border-slate-800 dark:bg-slate-900/75 lg:static lg:w-auto lg:max-w-none lg:translate-x-0 lg:rounded-2xl lg:border lg:shadow-lg',
+              'fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] transform overflow-y-auto border-r border-neutral-200 bg-white/95 p-5 shadow-xl backdrop-blur-xl transition-transform duration-300 dark:border-neutral-800 dark:bg-black/95 lg:static lg:w-auto lg:max-w-none lg:translate-x-0 lg:rounded-2xl lg:border lg:shadow-lg',
               sidebarOpen ? 'translate-x-0' : '-translate-x-full',
             ].join(' ')}
             aria-label="Sidebar"
           >
             <div className="flex items-center justify-between lg:hidden">
-              <p className="text-sm font-semibold text-slate-500 dark:text-slate-300">Navigation</p>
+              <p className="text-sm font-semibold text-neutral-500 dark:text-neutral-300">Navigation</p>
               <button
                 type="button"
                 onClick={() => setSidebarOpen(false)}
-                className="rounded-lg border border-slate-200 px-2 py-1 text-xs dark:border-slate-700"
+                className="rounded-lg border border-neutral-200 px-2 py-1 text-xs dark:border-neutral-700"
               >
                 Close
               </button>
@@ -155,8 +155,8 @@ export default function DashboardShell({
                     className={[
                       'rounded-xl px-4 py-3 text-sm font-medium transition duration-200',
                       isActive
-                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/35'
-                        : 'text-slate-700 hover:-translate-y-0.5 hover:bg-indigo-100/80 hover:text-indigo-700 dark:text-slate-200 dark:hover:bg-indigo-500/15 dark:hover:text-indigo-200',
+                        ? 'bg-neutral-900 text-white shadow-lg dark:bg-white dark:text-black'
+                        : 'text-neutral-700 hover:-translate-y-0.5 hover:bg-neutral-100 hover:text-black dark:text-neutral-200 dark:hover:bg-neutral-800 dark:hover:text-white',
                     ].join(' ')}
                   >
                     {item.label}
@@ -168,7 +168,7 @@ export default function DashboardShell({
             <button
               type="button"
               onClick={onLogout}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-700 transition hover:bg-rose-100 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-neutral-100 px-4 py-2.5 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
             >
               <LogoutIcon />
               Logout
@@ -178,7 +178,7 @@ export default function DashboardShell({
           {sidebarOpen && (
             <button
               type="button"
-              className="fixed inset-0 z-30 bg-slate-900/45 lg:hidden"
+              className="fixed inset-0 z-30 bg-neutral-900/45 lg:hidden"
               onClick={() => setSidebarOpen(false)}
               aria-label="Close sidebar"
             />
@@ -190,3 +190,5 @@ export default function DashboardShell({
     </div>
   );
 }
+
+

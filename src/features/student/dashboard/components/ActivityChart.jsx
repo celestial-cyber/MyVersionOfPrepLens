@@ -10,12 +10,19 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-export default function ActivityChart({ data }) {
+export default function ActivityChart({
+  data,
+  title = 'Weekly Activity',
+  datasetLabel = 'Study Hours',
+  emptyText = 'No activities logged yet.',
+  color = '#b5b5b5',
+  borderColor = '#8f8f8f',
+}) {
   if (!data.length) {
     return (
       <section className="dashboard-section">
-        <h3 className="dashboard-section-title">Weekly Activity</h3>
-        <p className="dashboard-empty">No activities logged yet.</p>
+        <h3 className="dashboard-section-title">{title}</h3>
+        <p className="dashboard-empty">{emptyText}</p>
       </section>
     );
   }
@@ -27,10 +34,10 @@ export default function ActivityChart({ data }) {
     labels,
     datasets: [
       {
-        label: 'Study Hours',
+        label: datasetLabel,
         data: values,
-        backgroundColor: '#b5b5b5',
-        borderColor: '#8f8f8f',
+        backgroundColor: color,
+        borderColor,
         borderWidth: 1,
         borderRadius: 6,
       },
@@ -68,7 +75,7 @@ export default function ActivityChart({ data }) {
 
   return (
     <section className="dashboard-section dashboard-section-hover">
-      <h3 className="dashboard-section-title">Weekly Activity</h3>
+      <h3 className="dashboard-section-title">{title}</h3>
       <div className="chart-wrap">
         <Bar data={chartData} options={options} />
       </div>

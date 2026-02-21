@@ -15,8 +15,14 @@ body,
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #0f172a;
-  background: #f1f5f9;
+  color: #111111;
+  background: #ffffff;
+  line-height: 1.45;
+}
+
+.dark body {
+  color: #f5f5f5;
+  background: #000000;
 }
 
 a,

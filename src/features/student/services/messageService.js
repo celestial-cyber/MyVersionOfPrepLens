@@ -9,7 +9,27 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../../firebase';
 
-const localMessages = [];
+const LOCAL_MESSAGES_KEY = 'preplens_local_messages';
+
+function canUseStorage() {
+  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+}
+
+function getLocalMessages() {
+  if (!canUseStorage()) return [];
+  try {
+    const raw = window.localStorage.getItem(LOCAL_MESSAGES_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function setLocalMessages(items) {
+  if (!canUseStorage()) return;
+  window.localStorage.setItem(LOCAL_MESSAGES_KEY, JSON.stringify(items));
+}
 
 function normalizeMessage(id, data) {
   const createdAt = data.createdAt?.toMillis ? data.createdAt.toMillis() : Date.now();
@@ -35,7 +55,11 @@ export async function appendAdminMessage({ userId, text }) {
   };
 
   if (!db) {
-    localMessages.push({ id: `local-${Date.now()}`, ...payload, createdAt: Date.now() });
+    const next = [
+      { id: `local-${Date.now()}`, userId, text: trimmed, from: 'admin', createdAt: Date.now() },
+      ...getLocalMessages(),
+    ];
+    setLocalMessages(next);
     return;
   }
 
@@ -49,8 +73,19 @@ export function subscribeMessagesForUser(userId, callback) {
   }
 
   if (!db) {
-    callback(localMessages.filter((item) => item.userId === userId));
-    return () => {};
+    const emit = () => {
+      const items = getLocalMessages()
+        .filter((item) => item.userId === userId)
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      callback(items);
+    };
+    emit();
+    const onStorage = (event) => {
+      if (event.key && event.key !== LOCAL_MESSAGES_KEY) return;
+      emit();
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
   }
 
   const messagesRef = collection(db, 'messages');

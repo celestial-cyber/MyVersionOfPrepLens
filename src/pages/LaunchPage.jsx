@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -116,46 +116,46 @@ export default function LaunchPage() {
   );
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-100 text-slate-900 transition-colors duration-500 dark:bg-slate-950 dark:text-slate-100">
+    <div className="relative min-h-screen overflow-hidden bg-white text-black transition-colors duration-500 dark:bg-black dark:text-white">
       <AnimatePresence>
         {showSplash ? (
           <motion.div
             key="splash"
-            className="fixed inset-0 z-50 grid place-items-center bg-slate-950"
+            className="fixed inset-0 z-50 grid place-items-center bg-black"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7 }}
           >
             <motion.div
-              className="rounded-2xl border border-sky-400/50 bg-slate-900/80 px-10 py-8 text-center shadow-glow"
+              className="rounded-2xl border border-neutral-700 bg-black/85 px-10 py-8 text-center shadow-glow"
               initial={{ scale: 0.9, opacity: 0.4 }}
               animate={{ scale: [0.9, 1.03, 1], opacity: 1 }}
               transition={{ duration: 1.2, ease: 'easeInOut' }}
             >
-              <p className="text-xs uppercase tracking-[0.35em] text-sky-300">Loading</p>
+              <p className="text-xs uppercase tracking-[0.35em] text-neutral-300">Loading</p>
               <h1 className="mt-3 text-4xl font-black tracking-tight text-white sm:text-5xl">PrepLens</h1>
-              <p className="mt-2 text-sm text-slate-300">Placement Intelligence Platform</p>
+              <p className="mt-2 text-sm text-neutral-300">Placement Intelligence Platform</p>
             </motion.div>
           </motion.div>
         ) : null}
       </AnimatePresence>
 
       <div className="pointer-events-none absolute inset-0 opacity-60 dark:opacity-100">
-        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-sky-400/25 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-teal-400/20 blur-3xl" />
-        <div className="absolute right-0 top-1/3 h-72 w-72 rounded-full bg-indigo-400/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.24)_1px,transparent_0)] [background-size:22px_22px] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.14)_1px,transparent_0)]" />
+        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-neutral-300/30 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-neutral-200/30 blur-3xl" />
+        <div className="absolute right-0 top-1/3 h-72 w-72 rounded-full bg-neutral-400/20 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(120,120,120,0.22)_1px,transparent_0)] [background-size:22px_22px] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(180,180,180,0.12)_1px,transparent_0)]" />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col px-5 pb-10 pt-6 sm:px-8 lg:px-12">
-        <header className="flex items-center justify-between rounded-2xl border border-slate-300/70 bg-white/70 px-4 py-3 shadow-lg backdrop-blur md:px-6 dark:border-slate-800 dark:bg-slate-900/75">
+        <header className="flex items-center justify-between rounded-2xl border border-neutral-300/70 bg-white/70 px-4 py-3 shadow-lg backdrop-blur md:px-6 dark:border-neutral-800 dark:bg-neutral-900/75">
           <div className="flex items-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-sky-500 to-cyan-400 text-white shadow-lg shadow-sky-500/40">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-neutral-900 to-neutral-700 text-white shadow-lg shadow-black/30 dark:from-neutral-100 dark:to-neutral-300 dark:text-black">
               <span className="text-lg font-black">P</span>
             </div>
             <div>
               <p className="text-lg font-extrabold tracking-tight">PrepLens</p>
-              <p className="text-xs text-slate-600 dark:text-slate-300">Turning Preparation Into Placement Readiness</p>
+              <p className="text-xs text-neutral-600 dark:text-neutral-300">Turning Preparation Into Placement Readiness</p>
             </div>
           </div>
 
@@ -163,28 +163,28 @@ export default function LaunchPage() {
             type="button"
             aria-label="Toggle dark mode"
             onClick={() => setDarkMode((prev) => !prev)}
-            className="rounded-xl border border-slate-300 bg-white/80 p-2.5 text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-400 hover:text-sky-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-sky-400"
+            className="rounded-xl border border-neutral-300 bg-white/80 p-2.5 text-neutral-700 shadow-sm transition hover:-translate-y-0.5 hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:border-neutral-300"
           >
             {darkMode ? <SunIcon /> : <MoonIcon />}
           </button>
         </header>
 
         <main className="mt-8 flex flex-1 flex-col gap-8">
-          <section className="rounded-3xl border border-slate-300/70 bg-white/75 p-7 shadow-2xl backdrop-blur-sm sm:p-10 dark:border-slate-800 dark:bg-slate-900/70">
+          <section className="rounded-3xl border border-neutral-300/70 bg-white/75 p-7 shadow-2xl backdrop-blur-sm sm:p-10 dark:border-neutral-800 dark:bg-neutral-900/70">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, ease: 'easeOut' }}
               className="mx-auto max-w-3xl text-center"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-600 dark:text-sky-300">Smart Placement Tracker</p>
-              <h1 className="mt-4 bg-gradient-to-r from-sky-600 via-cyan-500 to-indigo-600 bg-clip-text text-5xl font-black leading-tight text-transparent sm:text-6xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-neutral-600 dark:text-neutral-300">Smart Placement Tracker</p>
+              <h1 className="mt-4 bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-500 dark:from-neutral-100 dark:via-neutral-300 dark:to-neutral-500 bg-clip-text text-5xl font-black leading-tight text-transparent sm:text-6xl">
                 PrepLens
               </h1>
-              <h2 className="mt-4 text-xl font-semibold text-slate-800 sm:text-2xl dark:text-slate-100">
+              <h2 className="mt-4 text-xl font-semibold text-neutral-800 sm:text-2xl dark:text-neutral-100">
                 Turning Preparation Into Placement Readiness
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base dark:text-slate-300">
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-neutral-600 sm:text-base dark:text-neutral-300">
                 Track progress, measure readiness, and mentor smarter with real-time analytics.
               </p>
             </motion.div>
@@ -198,7 +198,7 @@ export default function LaunchPage() {
               <motion.div whileHover={{ y: -5, scale: 1.015 }} whileTap={{ scale: 0.985 }}>
                 <Link
                   to="/admin"
-                  className="flex items-center justify-center gap-3 rounded-2xl border border-sky-400/50 bg-gradient-to-r from-sky-600 to-cyan-500 px-6 py-4 text-base font-semibold text-white shadow-xl shadow-sky-500/30 transition"
+                  className="flex items-center justify-center gap-3 rounded-2xl border border-neutral-700 bg-black dark:bg-white dark:border-neutral-200 px-6 py-4 text-base font-semibold text-white shadow-xl shadow-black/35 transition dark:text-black"
                 >
                   <AdminIcon />
                   Admin / Trainer Login
@@ -208,7 +208,7 @@ export default function LaunchPage() {
               <motion.div whileHover={{ y: -5, scale: 1.015 }} whileTap={{ scale: 0.985 }}>
                 <Link
                   to="/student"
-                  className="flex items-center justify-center gap-3 rounded-2xl border border-slate-300 bg-white px-6 py-4 text-base font-semibold text-slate-900 shadow-xl transition hover:border-cyan-500 hover:text-cyan-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:border-cyan-400 dark:hover:text-cyan-300"
+                  className="flex items-center justify-center gap-3 rounded-2xl border border-neutral-300 bg-white px-6 py-4 text-base font-semibold text-neutral-900 shadow-xl transition hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-neutral-300 dark:hover:text-white"
                 >
                   <StudentIcon />
                   Student Login
@@ -217,7 +217,7 @@ export default function LaunchPage() {
             </motion.div>
           </section>
 
-          <section className="rounded-3xl border border-slate-300/70 bg-white/75 p-7 shadow-xl backdrop-blur-sm sm:p-8 dark:border-slate-800 dark:bg-slate-900/70">
+          <section className="rounded-3xl border border-neutral-300/70 bg-white/75 p-7 shadow-xl backdrop-blur-sm sm:p-8 dark:border-neutral-800 dark:bg-neutral-900/70">
             <h3 className="text-center text-2xl font-bold">Features Preview</h3>
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               {features.map((feature, index) => {
@@ -230,15 +230,15 @@ export default function LaunchPage() {
                     viewport={{ once: true, amount: 0.35 }}
                     transition={{ duration: 0.45, delay: index * 0.08 }}
                     whileHover={{ y: -4 }}
-                    className="rounded-2xl border border-slate-300/80 bg-slate-50/70 p-5 shadow-md transition dark:border-slate-700 dark:bg-slate-800/70"
+                    className="rounded-2xl border border-neutral-300/80 bg-neutral-50/70 p-5 shadow-md transition dark:border-neutral-700 dark:bg-neutral-800/70"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="rounded-xl bg-gradient-to-br from-cyan-500 to-sky-600 p-2.5 text-white shadow-lg shadow-sky-500/30">
+                      <div className="rounded-xl bg-gradient-to-br from-neutral-900 to-neutral-700 p-2.5 text-white shadow-lg shadow-black/30">
                         <Icon />
                       </div>
                       <div>
                         <h4 className="text-base font-semibold">{feature.title}</h4>
-                        <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">{feature.description}</p>
+                        <p className="mt-1 text-sm leading-6 text-neutral-600 dark:text-neutral-300">{feature.description}</p>
                       </div>
                     </div>
                   </motion.article>
@@ -247,21 +247,25 @@ export default function LaunchPage() {
             </div>
           </section>
 
-          <section className="rounded-3xl border border-slate-300/70 bg-gradient-to-br from-white/80 to-cyan-50/80 p-7 shadow-xl sm:p-8 dark:border-slate-800 dark:from-slate-900/80 dark:to-slate-800/80">
+          <section className="rounded-3xl border border-neutral-300/70 bg-gradient-to-br from-white/90 to-neutral-100/90 p-7 shadow-xl sm:p-8 dark:border-neutral-800 dark:from-neutral-900/80 dark:to-neutral-800/80">
             <h3 className="text-2xl font-bold">About PrepLens</h3>
-            <p className="mt-3 max-w-4xl text-sm leading-7 text-slate-700 sm:text-base dark:text-slate-300">
+            <p className="mt-3 max-w-4xl text-sm leading-7 text-neutral-700 sm:text-base dark:text-neutral-300">
               PrepLens helps students track preparation with clarity while enabling trainers to monitor placement readiness using real performance data, making every mentoring decision faster, objective, and impact-focused.
             </p>
           </section>
         </main>
 
         <footer className="mt-9 text-center">
-          <div className="mx-auto mb-4 h-px w-full max-w-2xl bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-          <p className="text-sm tracking-wide text-slate-700 dark:text-slate-300">
-            Built with passion by <span className="font-semibold text-cyan-700 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] dark:text-cyan-300">Team Celestial Voyagers</span>
+          <div className="mx-auto mb-4 h-px w-full max-w-2xl bg-gradient-to-r from-transparent via-neutral-500 to-transparent" />
+          <p className="text-sm tracking-wide text-neutral-700 dark:text-neutral-300">
+            Built with passion by <span className="font-semibold text-black dark:text-white">Team Celestial Voyagers</span>
           </p>
         </footer>
       </div>
     </div>
   );
 }
+
+
+
+

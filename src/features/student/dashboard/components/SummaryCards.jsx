@@ -1,8 +1,11 @@
 export default function SummaryCards({ stats }) {
   const cards = [
     { label: 'Total Activities', value: stats.totalActivities },
-    { label: 'Total Coding Count', value: stats.totalCodingCount },
+    { label: 'Hours This Week', value: stats.weekHours },
     { label: 'Completed Tasks', value: stats.completedTasks },
+    { label: 'Readiness Score', value: `${stats.readiness}%` },
+    { label: 'Current Streak', value: `${stats.streakDays} days` },
+    { label: 'Weak Areas', value: stats.weakAreasCount },
   ];
 
   return (

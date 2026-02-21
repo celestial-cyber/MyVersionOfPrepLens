@@ -38,7 +38,15 @@ export default function StudentMessages() {
       <h1 className="dashboard-title">Admin Messages</h1>
       <p className="dashboard-meta">Messages for: {student?.email || 'Unknown student'}</p>
       <div className="dashboard-section">
-        {messages.length === 0 && <p className="dashboard-empty">No admin messages yet.</p>}
+        {messages.length === 0 && (
+          <>
+            <p className="dashboard-empty">No admin messages yet.</p>
+            <ul className="dashboard-simple-list">
+              <li>Demo tip: Ask your trainer to assign a task from Admin Create Task page.</li>
+              <li>Once assigned, messages appear here as notifications.</li>
+            </ul>
+          </>
+        )}
         {messages.length > 0 && (
           <ul className="message-list">
             {messages.map((message) => (
