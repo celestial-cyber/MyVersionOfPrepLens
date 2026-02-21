@@ -155,7 +155,7 @@ export default function DashboardShell({
                     className={[
                       'rounded-xl px-4 py-3 text-sm font-medium transition duration-200',
                       isActive
-                        ? 'bg-neutral-600 text-white shadow-lg dark:bg-neutral-400 dark:text-black'
+                        ? 'bg-neutral-600 text-white shadow-lg dark:bg-neutral-600 dark:text-white'
                         : 'text-neutral-700 hover:-translate-y-0.5 hover:bg-neutral-100 hover:text-black dark:text-white dark:hover:bg-neutral-800 dark:hover:text-white',
                     ].join(' ')}
                   >
