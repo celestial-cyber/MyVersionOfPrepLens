@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import Loader from './Loader';
-import { subscribeToStudentAuth } from '../../services/authService';
+import { getCurrentUserRole, subscribeToStudentAuth } from '../../services/authService';
 
-export default function ProtectedRoute({ children, redirectPath = '/login' }) {
+export default function ProtectedRoute({ children, redirectPath = '/login', allowedRoles = [] }) {
   const location = useLocation();
   const [isChecking, setIsChecking] = useState(true);
   const [student, setStudent] = useState(null);
@@ -22,6 +22,14 @@ export default function ProtectedRoute({ children, redirectPath = '/login' }) {
 
   if (!student) {
     return <Navigate to={redirectPath} replace state={{ from: location.pathname }} />;
+  }
+
+  if (allowedRoles.length > 0) {
+    const role = getCurrentUserRole();
+    if (!role || !allowedRoles.includes(role)) {
+      const fallback = role === 'admin' ? '/admin/dashboard' : '/student/dashboard';
+      return <Navigate to={fallback} replace />;
+    }
   }
 
   return children;

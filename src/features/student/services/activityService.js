@@ -3,11 +3,15 @@ import {
   collection,
   getDocs,
   onSnapshot,
+  doc,
+  getDoc,
   query,
+  setDoc,
   serverTimestamp,
   where,
 } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import { calculateReadiness } from '../../../utils/readinessCalculator';
 
 const activities = [];
 
@@ -24,19 +28,49 @@ export function getRecentActivities() {
 }
 
 export async function logActivity(entry) {
-  const hours = Number(entry.hours) || 0;
-  const topic = entry.topic || 'General study';
+  const hours = Number(entry.hours);
+  const topic = String(entry.topic || '').trim() || 'General study';
+  const userId = entry.userId || null;
+  if (!Number.isFinite(hours) || hours <= 0 || hours > 24) {
+    throw new Error('Hours must be between 0.5 and 24.');
+  }
+  if (!userId) {
+    throw new Error('Please login before logging activity.');
+  }
+
   const day = new Date().toLocaleDateString('en-US', { weekday: 'short' });
   const payload = {
     day,
     hours,
     topic,
-    userId: entry.userId || null,
+    userId,
     createdAt: serverTimestamp(),
   };
 
-  if (db && entry.userId) {
+  if (db && userId) {
     await addDoc(collection(db, 'activities'), payload);
+    try {
+      const progressRef = doc(db, 'progress', userId);
+      const progressSnap = await getDoc(progressRef);
+      const existing = progressSnap.exists() ? progressSnap.data() : {};
+      const previousReadiness = Number(existing.readinessScore) || 0;
+      const previousStreak = Number(existing.streakDays) || 0;
+      const nextReadiness = Math.min(
+        100,
+        Math.max(previousReadiness, calculateReadiness({ hoursStudied: hours, completedTasks: 0, totalTasks: 1 }))
+      );
+
+      await setDoc(
+        progressRef,
+        {
+          readinessScore: nextReadiness,
+          streakDays: previousStreak + 1,
+        },
+        { merge: true }
+      );
+    } catch (progressError) {
+      console.error('Failed to update progress after activity log.', progressError);
+    }
     return { success: true, entry: payload };
   }
 

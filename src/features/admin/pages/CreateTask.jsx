@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { createAdminTask, getAllStudents } from '../services/adminDataService';
+import { appendAdminMessage } from '../../student/services/messageService';
 import '../styles/admin.css';
 
 export default function CreateTask() {
   const [students, setStudents] = useState([]);
   const [userId, setUserId] = useState('');
   const [title, setTitle] = useState('');
+  const [adminMessage, setAdminMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -38,8 +40,12 @@ export default function CreateTask() {
 
     try {
       await createAdminTask({ userId, title, completed: false });
+      if (adminMessage.trim()) {
+        await appendAdminMessage({ userId, text: adminMessage });
+      }
       setTitle('');
-      setMessage('Task created successfully.');
+      setAdminMessage('');
+      setMessage('Task and message saved successfully.');
     } catch (submitError) {
       setError(submitError.message || 'Failed to create task.');
     } finally {
@@ -73,6 +79,15 @@ export default function CreateTask() {
           onChange={(event) => setTitle(event.target.value)}
           placeholder="Enter task title"
           required
+        />
+
+        <label htmlFor="admin-message">Message to Student</label>
+        <textarea
+          id="admin-message"
+          value={adminMessage}
+          onChange={(event) => setAdminMessage(event.target.value)}
+          placeholder="Add instruction or motivation for this task"
+          rows={4}
         />
 
         <button type="submit" disabled={isSubmitting}>

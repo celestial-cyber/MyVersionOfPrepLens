@@ -20,6 +20,7 @@ export default function Navbar() {
       <div style={styles.links}>
         <Link to="/student/dashboard">Dashboard</Link>
         <Link to="/student/log">Log Activity</Link>
+        <Link to="/student/messages">Admin Messages</Link>
         <button onClick={handleLogout} style={styles.button} type="button">
           Logout
         </button>

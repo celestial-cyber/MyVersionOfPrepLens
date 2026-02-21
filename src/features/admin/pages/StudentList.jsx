@@ -64,7 +64,7 @@ export default function StudentList() {
         {
           label: 'Study hours',
           data: values,
-          backgroundColor: '#1a365d',
+          backgroundColor: '#111111',
         },
       ],
     };

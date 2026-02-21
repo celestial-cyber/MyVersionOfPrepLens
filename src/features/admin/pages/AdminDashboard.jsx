@@ -97,7 +97,7 @@ export default function AdminDashboard() {
               datasets: [
                 {
                   data: [stats.activeStudents, stats.inactiveStudents],
-                  backgroundColor: ['#2f855a', '#c53030'],
+                  backgroundColor: ['#111111', '#777777'],
                 },
               ],
             }}
@@ -113,7 +113,7 @@ export default function AdminDashboard() {
                 {
                   label: 'Students',
                   data: Object.values(readinessBuckets),
-                  backgroundColor: ['#1a365d', '#2b6cb0', '#90cdf4'],
+                  backgroundColor: ['#111111', '#444444', '#9a9a9a'],
                 },
               ],
             }}

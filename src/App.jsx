@@ -4,8 +4,8 @@ import Register from './pages/Register';
 import StudentLayout from './features/student/layout/StudentLayout';
 import StudentDashboard from './features/student/pages/StudentDashboard';
 import LogActivity from './features/student/pages/LogActivity';
+import StudentMessages from './features/student/pages/StudentMessages';
 import ProtectedRoute from './components/common/ProtectedRoute';
-import AdminLogin from './features/admin/pages/AdminLogin';
 import AdminDashboard from './features/admin/pages/AdminDashboard';
 import StudentList from './features/admin/pages/StudentList';
 import CreateTask from './features/admin/pages/CreateTask';
@@ -20,7 +20,7 @@ export default function App() {
       <Route
         path="/student"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={['student']}>
             <StudentLayout />
           </ProtectedRoute>
         }
@@ -28,13 +28,14 @@ export default function App() {
         <Route path="dashboard" element={<StudentDashboard />} />
         <Route path="log" element={<LogActivity />} />
         <Route path="log-activity" element={<LogActivity />} />
+        <Route path="messages" element={<StudentMessages />} />
       </Route>
 
-      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/login" element={<Navigate to="/login" replace />} />
       <Route
         path="/admin/dashboard"
         element={
-          <ProtectedRoute redirectPath="/admin/login">
+          <ProtectedRoute redirectPath="/login" allowedRoles={['admin']}>
             <AdminDashboard />
           </ProtectedRoute>
         }
@@ -42,7 +43,7 @@ export default function App() {
       <Route
         path="/admin/students"
         element={
-          <ProtectedRoute redirectPath="/admin/login">
+          <ProtectedRoute redirectPath="/login" allowedRoles={['admin']}>
             <StudentList />
           </ProtectedRoute>
         }
@@ -50,7 +51,7 @@ export default function App() {
       <Route
         path="/admin/create-task"
         element={
-          <ProtectedRoute redirectPath="/admin/login">
+          <ProtectedRoute redirectPath="/login" allowedRoles={['admin']}>
             <CreateTask />
           </ProtectedRoute>
         }

@@ -2,9 +2,10 @@
   display: grid;
   gap: 16px;
   padding: 16px;
-  border: 1px solid #d9d9d9;
+  border: 1px solid #e5e5e5;
   border-radius: 10px;
   background: #fff;
+  color: #111;
 }
 
 .admin-auth-wrap {
@@ -26,6 +27,17 @@
   background: #fff;
 }
 
+.admin-auth-form input,
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #fff;
+  color: #111;
+}
+
 .admin-stats-grid {
   display: grid;
   gap: 12px;
@@ -37,6 +49,12 @@
   border-radius: 8px;
   padding: 12px;
   background: #fff;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-card:hover {
+  background: #f2f2f2;
+  border-color: #c4c4c4;
 }
 
 .admin-card h3,
@@ -87,7 +105,7 @@
 }
 
 .admin-table-row:hover {
-  background: #f4f4f4;
+  background: #f2f2f2;
 }
 
 .admin-student-activity {
