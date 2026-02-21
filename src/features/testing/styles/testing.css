@@ -14,9 +14,9 @@
 }
 
 .test-chip-active {
-  background: #173450;
+  background: #8f79cf;
   color: #fff;
-  border-color: #173450;
+  border-color: #8f79cf;
 }
 
 .test-student-grid {
@@ -58,13 +58,13 @@
   width: 100%;
   border: 1px solid var(--pl-border);
   border-radius: 999px;
-  background: #f6f2de;
+  background: #f1ebff;
   overflow: hidden;
 }
 
 .test-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #173450, #1e5b6f, #3b91a6);
+  background: linear-gradient(90deg, #8f79cf, #a992e4, #bda9f4);
 }
 
 .test-question-card {
@@ -84,3 +84,5 @@
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
+

@@ -138,7 +138,7 @@
 
 .task-select {
   width: 100%;
-  border: 1px solid #9cb6c2;
+  border: 1px solid #beaee8;
   border-radius: 0.7rem;
   padding: 0.3rem 0.45rem;
   background: var(--pl-surface);
@@ -176,7 +176,7 @@
 
 .task-status-completed {
   background: rgba(50, 50, 50, 0.15);
-  color: #173450;
+  color: #8f79cf;
 }
 
 .task-status-pending {
@@ -228,11 +228,11 @@
 }
 
 .heatmap-cell-3 {
-  background: #1e5b6f;
+  background: #a992e4;
 }
 
 .heatmap-cell-4 {
-  background: #173450;
+  background: #8f79cf;
 }
 
 .heatmap-summary {
@@ -407,7 +407,7 @@
 }
 
 .form-control {
-  border: 1px solid #9cb6c2;
+  border: 1px solid #beaee8;
   border-radius: 0.85rem;
   padding: 0.68rem 0.8rem;
   background: var(--pl-surface);
@@ -424,7 +424,7 @@
   border-radius: 0.85rem;
   padding: 0.7rem 1rem;
   color: #fff;
-  background: linear-gradient(120deg, var(--pl-text), #1e5b6f);
+  background: linear-gradient(120deg, var(--pl-text), #a992e4);
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
@@ -441,7 +441,7 @@
 
 .feedback-success {
   margin: 0;
-  color: #173450;
+  color: #8f79cf;
 }
 
 .feedback-error {
@@ -499,6 +499,8 @@
   background: rgba(200, 200, 200, 0.2);
   color: #e5e5e5;
 }
+
+
 
 
 

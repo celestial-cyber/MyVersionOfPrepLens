@@ -275,22 +275,22 @@ export default function StudentDashboard() {
         data={computed.dailyData}
         title="Daily Progress (Last 7 Days)"
         datasetLabel="Hours"
-        color="#737373"
-        borderColor="#262626"
+        color="rgba(202, 184, 244, 0.9)"
+        borderColor="#9b86d8"
       />
       <ActivityChart
         data={computed.weeklyData}
         title="Weekly Progress (Last 4 Weeks)"
         datasetLabel="Total Hours"
-        color="#a3a3a3"
-        borderColor="#404040"
+        color="rgba(181, 156, 236, 0.9)"
+        borderColor="#8f79cf"
       />
       <ActivityChart
         data={computed.coreCategoryData}
         title="Category Progress: Aptitude, Technical, Verbal, Softskills"
         datasetLabel="Hours by Category"
-        color="#525252"
-        borderColor="#171717"
+        color="rgba(154, 124, 222, 0.92)"
+        borderColor="#7f67c7"
       />
       <section className="dashboard-section dashboard-section-hover">
         <h3 className="dashboard-section-title">Weak Areas</h3>

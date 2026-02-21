@@ -114,7 +114,9 @@ export default function StudentList() {
         {
           label: 'Study hours',
           data: values,
-          backgroundColor: '#111111',
+          backgroundColor: '#9b86d8',
+          borderColor: '#7f67c7',
+          borderWidth: 1,
         },
       ],
     };
@@ -133,7 +135,7 @@ export default function StudentList() {
         {
           label: 'Hours by category',
           data: [totals.aptitude, totals.technical, totals.verbal, totals.softskills],
-          backgroundColor: ['#111111', '#404040', '#737373', '#a3a3a3'],
+          backgroundColor: ['#8f79cf', '#a992e4', '#bfa9ee', '#d5c5f7'],
         },
       ],
     };

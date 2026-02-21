@@ -116,46 +116,46 @@ export default function LaunchPage() {
   );
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f8f3df] text-[#173450] transition-colors duration-500 dark:bg-[#071425] dark:text-[#e2ecf5]">
+    <div className="relative min-h-screen overflow-hidden bg-[#f6f0ff] text-[#8f79cf] transition-colors duration-500 dark:bg-[#f0e6ff] dark:text-[#e2ecf5]">
       <AnimatePresence>
         {showSplash ? (
           <motion.div
             key="splash"
-            className="fixed inset-0 z-50 grid place-items-center bg-[#071425]"
+            className="fixed inset-0 z-50 grid place-items-center bg-[#f0e6ff]"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7 }}
           >
             <motion.div
-              className="rounded-2xl border border-[#2e4a63] bg-[#0d1f35]/90 px-10 py-8 text-center shadow-glow"
+              className="rounded-2xl border border-[#a28ccc] bg-[#f4edff]/90 px-10 py-8 text-center shadow-glow"
               initial={{ scale: 0.9, opacity: 0.4 }}
               animate={{ scale: [0.9, 1.03, 1], opacity: 1 }}
               transition={{ duration: 1.2, ease: 'easeInOut' }}
             >
-              <p className="text-xs uppercase tracking-[0.35em] text-[#dce9f1]">Loading</p>
-              <h1 className="mt-3 text-4xl font-black tracking-tight text-[#f4cc61] sm:text-5xl">PrepLens</h1>
-              <p className="mt-2 text-sm text-[#dce9f1]">Placement Intelligence Platform</p>
+              <p className="text-xs uppercase tracking-[0.35em] text-[#4d3f71]">Loading</p>
+              <h1 className="mt-3 text-4xl font-black tracking-tight text-[#d8c7ff] sm:text-5xl">PrepLens</h1>
+              <p className="mt-2 text-sm text-[#4d3f71]">Placement Intelligence Platform</p>
             </motion.div>
           </motion.div>
         ) : null}
       </AnimatePresence>
 
       <div className="pointer-events-none absolute inset-0 opacity-60 dark:opacity-100">
-        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[#ebbe44]/25 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-[#3b91a6]/20 blur-3xl" />
-        <div className="absolute right-0 top-1/3 h-72 w-72 rounded-full bg-[#1d3c6a]/25 blur-3xl" />
+        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[#cdb7ff]/25 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-[#bda9f4]/20 blur-3xl" />
+        <div className="absolute right-0 top-1/3 h-72 w-72 rounded-full bg-[#ad98e6]/25 blur-3xl" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(25,61,95,0.18)_1px,transparent_0)] [background-size:22px_22px] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(191,219,254,0.1)_1px,transparent_0)]" />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col px-5 pb-10 pt-6 sm:px-8 lg:px-12">
-        <header className="flex items-center justify-between rounded-2xl border border-[#bfd4db] bg-[#fffbf0]/85 px-4 py-3 shadow-lg backdrop-blur md:px-6 dark:border-[#2e4a63] dark:bg-[#0d1f35]/85">
+        <header className="flex items-center justify-between rounded-2xl border border-[#d9ccf4] bg-[#fbf8ff]/85 px-4 py-3 shadow-lg backdrop-blur md:px-6 dark:border-[#a28ccc] dark:bg-[#f4edff]/85">
           <div className="flex items-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-[#173450] to-[#1e5b6f] text-white shadow-lg shadow-[#173450]/35 dark:from-[#f4cc61] dark:to-[#e1b232] dark:text-[#173450]">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-[#8f79cf] to-[#a992e4] text-[#2d1f4d] shadow-lg shadow-[#8f79cf]/35 dark:from-[#d8c7ff] dark:to-[#c9b2ff] dark:text-[#8f79cf]">
               <span className="text-lg font-black">P</span>
             </div>
             <div>
               <p className="text-lg font-extrabold tracking-tight">PrepLens</p>
-              <p className="text-xs text-[#3f607b] dark:text-[#dce9f1]">Turning Preparation Into Placement Readiness</p>
+              <p className="text-xs text-[#5b4f7a] dark:text-[#4d3f71]">Turning Preparation Into Placement Readiness</p>
             </div>
           </div>
 
@@ -163,28 +163,28 @@ export default function LaunchPage() {
             type="button"
             aria-label="Toggle dark mode"
             onClick={() => setDarkMode((prev) => !prev)}
-            className="rounded-xl border border-[#9cb6c2] bg-white p-2.5 text-[#234a6a] shadow-sm transition hover:-translate-y-0.5 hover:border-[#1e5b6f] hover:bg-[#1e5b6f] hover:text-white dark:border-[#2e4a63] dark:bg-[#112844] dark:text-[#dce9f1] dark:hover:border-[#3b91a6]"
+            className="rounded-xl border border-[#beaee8] bg-white p-2.5 text-[#544777] shadow-sm transition hover:-translate-y-0.5 hover:border-[#a992e4] hover:bg-[#a992e4] hover:text-[#2d1f4d] dark:border-[#a28ccc] dark:bg-[#f1eaff] dark:text-[#4d3f71] dark:hover:border-[#bda9f4]"
           >
             {darkMode ? <SunIcon /> : <MoonIcon />}
           </button>
         </header>
 
         <main className="mt-8 flex flex-1 flex-col gap-8">
-          <section className="rounded-3xl border border-[#bfd4db] bg-[#fffbf0]/85 p-7 shadow-2xl backdrop-blur-sm sm:p-10 dark:border-[#2e4a63] dark:bg-[#0d1f35]/80">
+          <section className="rounded-3xl border border-[#d9ccf4] bg-[#fbf8ff]/85 p-7 shadow-2xl backdrop-blur-sm sm:p-10 dark:border-[#a28ccc] dark:bg-[#f4edff]/80">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, ease: 'easeOut' }}
               className="mx-auto max-w-3xl text-center"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#3f607b] dark:text-[#dce9f1]">Smart Placement Tracker</p>
-              <h1 className="mt-4 bg-gradient-to-r from-[#173450] via-[#1e5b6f] to-[#ebbe44] dark:from-[#f4cc61] dark:via-[#dce9f1] dark:to-[#3b91a6] bg-clip-text text-5xl font-black leading-tight text-transparent sm:text-6xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#5b4f7a] dark:text-[#4d3f71]">Smart Placement Tracker</p>
+              <h1 className="mt-4 bg-gradient-to-r from-[#8f79cf] via-[#a992e4] to-[#cdb7ff] dark:from-[#d8c7ff] dark:via-[#4d3f71] dark:to-[#bda9f4] bg-clip-text text-5xl font-black leading-tight text-transparent sm:text-6xl">
                 PrepLens
               </h1>
-              <h2 className="mt-4 text-xl font-semibold text-[#173450] sm:text-2xl dark:text-[#eff6ff]">
+              <h2 className="mt-4 text-xl font-semibold text-[#8f79cf] sm:text-2xl dark:text-[#2d1f4d]">
                 Turning Preparation Into Placement Readiness
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#3f607b] sm:text-base dark:text-[#dce9f1]">
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#5b4f7a] sm:text-base dark:text-[#4d3f71]">
                 Track progress, measure readiness, and mentor smarter with real-time analytics.
               </p>
             </motion.div>
@@ -198,7 +198,7 @@ export default function LaunchPage() {
               <motion.div whileHover={{ y: -5, scale: 1.015 }} whileTap={{ scale: 0.985 }}>
                 <Link
                   to="/admin"
-                  className="flex items-center justify-center gap-3 rounded-2xl border border-[#173450] bg-[#173450] px-6 py-4 text-base font-semibold text-white shadow-xl shadow-[#173450]/35 transition hover:bg-[#1e5b6f] hover:text-white active:bg-[#3b91a6] active:text-white dark:bg-[#f4cc61] dark:border-[#f4cc61] dark:text-[#102337] dark:hover:bg-[#e1b232] dark:hover:text-[#102337] dark:active:bg-[#d29e1d] dark:active:text-[#102337]"
+                  className="flex items-center justify-center gap-3 rounded-2xl border border-[#8f79cf] bg-[#8f79cf] px-6 py-4 text-base font-semibold text-[#2d1f4d] shadow-xl shadow-[#8f79cf]/35 transition hover:bg-[#a992e4] hover:text-[#2d1f4d] active:bg-[#bda9f4] active:text-[#2d1f4d] dark:bg-[#d8c7ff] dark:border-[#d8c7ff] dark:text-[#2d1f4d] dark:hover:bg-[#c9b2ff] dark:hover:text-[#2d1f4d] dark:active:bg-[#b79ae9] dark:active:text-[#2d1f4d]"
                 >
                   <AdminIcon />
                   Admin / Trainer Login
@@ -208,7 +208,7 @@ export default function LaunchPage() {
               <motion.div whileHover={{ y: -5, scale: 1.015 }} whileTap={{ scale: 0.985 }}>
                 <Link
                   to="/student"
-                  className="flex items-center justify-center gap-3 rounded-2xl border border-[#9cb6c2] bg-white px-6 py-4 text-base font-semibold text-[#173450] shadow-xl transition hover:border-[#1e5b6f] hover:bg-[#1e5b6f] hover:text-white dark:border-[#2e4a63] dark:bg-[#112844] dark:text-[#dce9f1] dark:hover:border-[#3b91a6] dark:hover:text-[#f4cc61]"
+                  className="flex items-center justify-center gap-3 rounded-2xl border border-[#beaee8] bg-white px-6 py-4 text-base font-semibold text-[#8f79cf] shadow-xl transition hover:border-[#a992e4] hover:bg-[#a992e4] hover:text-[#2d1f4d] dark:border-[#a28ccc] dark:bg-[#f1eaff] dark:text-[#4d3f71] dark:hover:border-[#bda9f4] dark:hover:text-[#d8c7ff]"
                 >
                   <StudentIcon />
                   Student Login
@@ -217,7 +217,7 @@ export default function LaunchPage() {
             </motion.div>
           </section>
 
-          <section className="rounded-3xl border border-[#bfd4db] bg-[#fffbf0]/85 p-7 shadow-xl backdrop-blur-sm sm:p-8 dark:border-[#2e4a63] dark:bg-[#0d1f35]/80">
+          <section className="rounded-3xl border border-[#d9ccf4] bg-[#fbf8ff]/85 p-7 shadow-xl backdrop-blur-sm sm:p-8 dark:border-[#a28ccc] dark:bg-[#f4edff]/80">
             <h3 className="text-center text-2xl font-bold">Features Preview</h3>
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               {features.map((feature, index) => {
@@ -230,15 +230,15 @@ export default function LaunchPage() {
                     viewport={{ once: true, amount: 0.35 }}
                     transition={{ duration: 0.45, delay: index * 0.08 }}
                     whileHover={{ y: -4 }}
-                    className="rounded-2xl border border-[#bfd4db] bg-[#f6f2de]/70 p-5 shadow-md transition dark:border-[#2e4a63] dark:bg-[#112844]/70"
+                    className="rounded-2xl border border-[#d9ccf4] bg-[#f1ebff]/70 p-5 shadow-md transition dark:border-[#a28ccc] dark:bg-[#f1eaff]/70"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="rounded-xl bg-gradient-to-br from-[#173450] to-[#1e5b6f] p-2.5 text-white shadow-lg shadow-[#173450]/35">
+                      <div className="rounded-xl bg-gradient-to-br from-[#8f79cf] to-[#a992e4] p-2.5 text-[#2d1f4d] shadow-lg shadow-[#8f79cf]/35">
                         <Icon />
                       </div>
                       <div>
                         <h4 className="text-base font-semibold">{feature.title}</h4>
-                        <p className="mt-1 text-sm leading-6 text-[#3f607b] dark:text-[#dce9f1]">{feature.description}</p>
+                        <p className="mt-1 text-sm leading-6 text-[#5b4f7a] dark:text-[#4d3f71]">{feature.description}</p>
                       </div>
                     </div>
                   </motion.article>
@@ -247,24 +247,27 @@ export default function LaunchPage() {
             </div>
           </section>
 
-          <section className="rounded-3xl border border-[#bfd4db] bg-gradient-to-br from-[#fffbf0]/90 to-[#f6f2de]/90 p-7 shadow-xl sm:p-8 dark:border-[#2e4a63] dark:from-[#0d1f35]/80 dark:to-[#112844]/80">
+          <section className="rounded-3xl border border-[#d9ccf4] bg-gradient-to-br from-[#fbf8ff]/90 to-[#f1ebff]/90 p-7 shadow-xl sm:p-8 dark:border-[#a28ccc] dark:from-[#f4edff]/80 dark:to-[#f1eaff]/80">
             <h3 className="text-2xl font-bold">About PrepLens</h3>
-            <p className="mt-3 max-w-4xl text-sm leading-7 text-[#36546f] sm:text-base dark:text-[#dce9f1]">
+            <p className="mt-3 max-w-4xl text-sm leading-7 text-[#5e517f] sm:text-base dark:text-[#4d3f71]">
               PrepLens helps students track preparation with clarity while enabling trainers to monitor placement readiness using real performance data, making every mentoring decision faster, objective, and impact-focused.
             </p>
           </section>
         </main>
 
         <footer className="mt-9 text-center">
-          <div className="mx-auto mb-4 h-px w-full max-w-2xl bg-gradient-to-r from-transparent via-[#3b91a6] to-transparent" />
-          <p className="text-sm tracking-wide text-[#36546f] dark:text-[#dce9f1]">
-            Built with passion by <span className="font-semibold text-[#173450] dark:text-[#eff6ff]">Team Celestial Voyagers</span>
+          <div className="mx-auto mb-4 h-px w-full max-w-2xl bg-gradient-to-r from-transparent via-[#bda9f4] to-transparent" />
+          <p className="text-sm tracking-wide text-[#5e517f] dark:text-[#4d3f71]">
+            Built with passion by <span className="font-semibold text-[#8f79cf] dark:text-[#2d1f4d]">Team Celestial Voyagers</span>
           </p>
         </footer>
       </div>
     </div>
   );
 }
+
+
+
 
 
 

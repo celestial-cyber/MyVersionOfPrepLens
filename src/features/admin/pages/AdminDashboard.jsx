@@ -196,20 +196,20 @@ export default function AdminDashboard() {
           data: readiness,
           borderRadius: 8,
           backgroundColor: readiness.map((value) => {
-            if (value < 40) return 'rgba(163, 163, 163, 0.85)';
-            if (value < 75) return 'rgba(115, 115, 115, 0.85)';
-            return 'rgba(23, 23, 23, 0.85)';
+            if (value < 40) return 'rgba(213, 197, 247, 0.95)';
+            if (value < 75) return 'rgba(184, 159, 238, 0.95)';
+            return 'rgba(146, 114, 219, 0.95)';
           }),
           borderWidth: 1,
-          borderColor: 'rgba(15, 23, 42, 0.15)',
+          borderColor: 'rgba(128, 104, 199, 0.3)',
           yAxisID: 'y',
         },
         {
           type: 'line',
           label: 'Streak Days',
           data: streaks,
-          borderColor: '#525252',
-          pointBackgroundColor: '#262626',
+          borderColor: '#8f79cf',
+          pointBackgroundColor: '#7b64bf',
           pointRadius: 3,
           tension: 0.3,
           yAxisID: 'y1',
@@ -218,8 +218,8 @@ export default function AdminDashboard() {
           type: 'line',
           label: 'Total Activities',
           data: activities,
-          borderColor: '#a3a3a3',
-          pointBackgroundColor: '#525252',
+          borderColor: '#b59cec',
+          pointBackgroundColor: '#9b86d8',
           pointRadius: 3,
           tension: 0.3,
           yAxisID: 'y1',
@@ -302,7 +302,7 @@ export default function AdminDashboard() {
                 datasets: [
                   {
                     data: [stats.activeStudents, stats.inactiveStudents],
-                    backgroundColor: ['#111111', '#9ca3af'],
+                    backgroundColor: ['#8f79cf', '#d5c5f7'],
                   },
                 ],
               }}
@@ -318,7 +318,7 @@ export default function AdminDashboard() {
                   {
                     label: 'Students',
                     data: Object.values(readinessBuckets),
-                    backgroundColor: ['#111111', '#525252', '#a3a3a3'],
+                    backgroundColor: ['#8f79cf', '#b59cec', '#d5c5f7'],
                   },
                 ],
               }}
@@ -334,7 +334,7 @@ export default function AdminDashboard() {
                   {
                     label: 'Avg readiness',
                     data: categoryProgress.values,
-                    backgroundColor: '#404040',
+                    backgroundColor: '#a992e4',
                   },
                 ],
               }}
@@ -350,7 +350,7 @@ export default function AdminDashboard() {
                   {
                     label: 'Students',
                     data: Object.values(streakBuckets),
-                    backgroundColor: ['#d4d4d4', '#a3a3a3', '#737373', '#262626'],
+                    backgroundColor: ['#ede5ff', '#d5c5f7', '#b59cec', '#8f79cf'],
                   },
                 ],
               }}

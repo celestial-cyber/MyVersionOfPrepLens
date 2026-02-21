@@ -60,7 +60,7 @@
 .admin-form input,
 .admin-form select,
 .admin-form textarea {
-  border: 1px solid #9cb6c2;
+  border: 1px solid #beaee8;
   border-radius: 0.85rem;
   padding: 0.7rem 0.85rem;
   background: var(--pl-surface);
@@ -176,7 +176,7 @@
   color: var(--pl-text);
   position: sticky;
   top: 0;
-  background: #f8f3df;
+  background: #f6f0ff;
   z-index: 2;
 }
 
@@ -191,12 +191,20 @@
 
 .admin-student-activity {
   margin-top: 0.25rem;
+  overflow: hidden;
 }
 
 .admin-student-chart-grid {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  width: 100%;
+}
+
+.admin-student-chart-grid > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .admin-progress-wrap {
@@ -205,13 +213,13 @@
   width: 170px;
   border-radius: 999px;
   border: 1px solid rgba(90, 90, 90, 0.3);
-  background: #f6f2de;
+  background: #f1ebff;
   height: 24px;
 }
 
 .admin-progress-fill {
   height: 100%;
-  background: linear-gradient(120deg, var(--pl-text), #1e5b6f);
+  background: linear-gradient(120deg, var(--pl-text), #a992e4);
 }
 
 .admin-progress-wrap span {
@@ -248,7 +256,7 @@
 .admin-controls select {
   width: 100%;
   margin-top: 0.25rem;
-  border: 1px solid #9cb6c2;
+  border: 1px solid #beaee8;
   border-radius: 0.85rem;
   padding: 0.65rem 0.75rem;
   background: var(--pl-surface);
@@ -290,12 +298,19 @@
   background: var(--pl-surface);
   border-radius: 0.8rem;
   padding: 0.55rem 0.7rem;
+  overflow: hidden;
+}
+
+.admin-task-progress-item span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .admin-task-progress-actions {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .admin-task-delete-btn {
@@ -419,6 +434,8 @@
     min-width: 980px;
   }
 }
+
+
 
 
 

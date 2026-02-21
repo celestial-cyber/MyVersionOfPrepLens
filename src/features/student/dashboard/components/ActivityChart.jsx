@@ -15,8 +15,8 @@ export default function ActivityChart({
   title = 'Weekly Activity',
   datasetLabel = 'Study Hours',
   emptyText = 'No activities logged yet.',
-  color = '#b5b5b5',
-  borderColor = '#8f8f8f',
+  color = 'rgba(169, 146, 228, 0.85)',
+  borderColor = '#8f79cf',
 }) {
   if (!data.length) {
     return (
@@ -56,15 +56,15 @@ export default function ActivityChart({
       y: {
         beginAtZero: true,
         ticks: {
-          color: '#333',
+          color: '#4f3f6f',
         },
         grid: {
-          color: '#e5e5e5',
+          color: 'rgba(190, 174, 232, 0.45)',
         },
       },
       x: {
         ticks: {
-          color: '#333',
+          color: '#4f3f6f',
         },
         grid: {
           display: false,

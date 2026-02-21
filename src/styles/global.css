@@ -3,25 +3,25 @@
 @tailwind utilities;
 
 :root {
-  --pl-bg: #f8f3df;
-  --pl-surface: #fffbf0;
-  --pl-border: #bfd4db;
-  --pl-text: #173450;
-  --pl-muted: #3f607b;
-  --pl-accent: #1e5b6f;
-  --pl-accent-strong: #173450;
-  --pl-warm: #ebbe44;
+  --pl-bg: #f6f0ff;
+  --pl-surface: #fbf8ff;
+  --pl-border: #d9ccf4;
+  --pl-text: #2d1f4d;
+  --pl-muted: #5b4f7a;
+  --pl-accent: #a992e4;
+  --pl-accent-strong: #8f79cf;
+  --pl-warm: #d8c7ff;
 }
 
 .dark {
-  --pl-bg: #071425;
-  --pl-surface: #0d1f35;
-  --pl-border: #2e4a63;
-  --pl-text: #e2ecf5;
-  --pl-muted: #c7d9e8;
-  --pl-accent: #3b91a6;
-  --pl-accent-strong: #f4cc61;
-  --pl-warm: #ebbe44;
+  --pl-bg: #f3ebff;
+  --pl-surface: #f8f3ff;
+  --pl-border: #ccb9ef;
+  --pl-text: #2d1f4d;
+  --pl-muted: #5b4f7a;
+  --pl-accent: #a992e4;
+  --pl-accent-strong: #8f79cf;
+  --pl-warm: #d8c7ff;
 }
 
 * {
@@ -38,12 +38,12 @@ body {
   margin: 0;
   font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, sans-serif;
   color: var(--pl-text);
-  background: linear-gradient(145deg, var(--pl-bg), #f3edd3);
+  background: linear-gradient(145deg, var(--pl-bg), #efe5ff);
   line-height: 1.45;
 }
 
 .dark body {
-  background: linear-gradient(145deg, #071425, #0b1a2d);
+  background: linear-gradient(145deg, #f3ebff, #ece1ff);
 }
 
 a,
@@ -66,3 +66,5 @@ select,
 textarea {
   color: var(--pl-text);
 }
+
+

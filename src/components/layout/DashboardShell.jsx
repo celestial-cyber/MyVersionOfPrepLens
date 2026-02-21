@@ -73,44 +73,44 @@ export default function DashboardShell({
   const initials = useMemo(() => getInitials(userName), [userName]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f8f3df] text-[#173450] transition-colors duration-300 dark:bg-[#071425] dark:text-[#e2ecf5]">
+    <div className="relative min-h-screen overflow-hidden bg-[#f6f0ff] text-[#8f79cf] transition-colors duration-300 dark:bg-[#f0e6ff] dark:text-[#e2ecf5]">
       <div className="pointer-events-none absolute inset-0 opacity-70 dark:opacity-100">
-        <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-[#ebbe44]/35 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-[#3b91a6]/20 blur-3xl dark:bg-[#1e5b6f]/30" />
-        <div className="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-[#1d3c6a]/20 blur-3xl dark:bg-[#1d3c6a]/35" />
+        <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-[#cdb7ff]/35 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-[#bda9f4]/20 blur-3xl dark:bg-[#a992e4]/30" />
+        <div className="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-[#ad98e6]/20 blur-3xl dark:bg-[#ad98e6]/35" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(23,52,80,0.14)_1px,transparent_0)] [background-size:20px_20px]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 pb-8 pt-4 sm:px-6 lg:px-8">
-        <header className="sticky top-4 z-30 mb-6 flex items-center justify-between rounded-2xl border border-[#bfd4db] bg-[#fffbf0]/95 px-3 py-3 shadow-lg backdrop-blur-xl dark:border-[#2e4a63] dark:bg-[#0d1f35]/90 sm:px-5">
+        <header className="sticky top-4 z-30 mb-6 flex items-center justify-between rounded-2xl border border-[#d9ccf4] bg-[#fbf8ff]/95 px-3 py-3 shadow-lg backdrop-blur-xl dark:border-[#a28ccc] dark:bg-[#f4edff]/90 sm:px-5">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setSidebarOpen((prev) => !prev)}
-              className="inline-flex rounded-xl border border-[#9cb6c2] bg-white p-2 text-[#234a6a] transition hover:bg-[#f6f2de] lg:hidden dark:border-[#2e4a63] dark:bg-[#112844] dark:text-[#dce9f1]"
+              className="inline-flex rounded-xl border border-[#beaee8] bg-white p-2 text-[#544777] transition hover:bg-[#f1ebff] lg:hidden dark:border-[#a28ccc] dark:bg-[#f1eaff] dark:text-[#4d3f71]"
               aria-label="Toggle sidebar"
             >
               <MenuIcon />
             </button>
 
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#173450] text-sm font-bold text-white shadow-lg dark:bg-[#f4cc61] dark:text-[#173450]">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#8f79cf] text-sm font-bold text-[#2d1f4d] shadow-lg dark:bg-[#d8c7ff] dark:text-[#8f79cf]">
               PL
             </div>
             <div>
-              <p className="text-lg font-black text-[#173450] dark:text-[#eff6ff]">{roleTitle}</p>
-              <p className="text-xs text-[#3f607b] dark:text-[#c7d9e8]">{roleTagline}</p>
+              <p className="text-lg font-black text-[#8f79cf] dark:text-[#2d1f4d]">{roleTitle}</p>
+              <p className="text-xs text-[#5b4f7a] dark:text-[#6a5b8e]">{roleTagline}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden rounded-xl border border-[#bfd4db] bg-[#f6f2de] px-3 py-2 text-xs font-medium text-[#173450] sm:block dark:border-[#2e4a63] dark:bg-[#112844] dark:text-[#dce9f1]">
+            <div className="hidden rounded-xl border border-[#d9ccf4] bg-[#f1ebff] px-3 py-2 text-xs font-medium text-[#8f79cf] sm:block dark:border-[#a28ccc] dark:bg-[#f1eaff] dark:text-[#4d3f71]">
               {streakText}
             </div>
 
             <button
               type="button"
               aria-label="Notifications"
-              className="rounded-xl border border-[#9cb6c2] bg-white p-2 text-[#234a6a] transition hover:-translate-y-0.5 hover:border-[#1e5b6f] hover:text-[#173450] dark:border-[#2e4a63] dark:bg-[#112844] dark:text-[#dce9f1]"
+              className="rounded-xl border border-[#beaee8] bg-white p-2 text-[#544777] transition hover:-translate-y-0.5 hover:border-[#a992e4] hover:text-[#8f79cf] dark:border-[#a28ccc] dark:bg-[#f1eaff] dark:text-[#4d3f71]"
             >
               <BellIcon />
             </button>
@@ -119,12 +119,12 @@ export default function DashboardShell({
               type="button"
               onClick={() => setIsDarkMode((prev) => !prev)}
               aria-label="Toggle theme"
-              className="rounded-xl border border-[#9cb6c2] bg-white p-2 text-[#234a6a] transition hover:-translate-y-0.5 hover:border-[#1e5b6f] hover:text-[#173450] dark:border-[#2e4a63] dark:bg-[#112844] dark:text-[#dce9f1]"
+              className="rounded-xl border border-[#beaee8] bg-white p-2 text-[#544777] transition hover:-translate-y-0.5 hover:border-[#a992e4] hover:text-[#8f79cf] dark:border-[#a28ccc] dark:bg-[#f1eaff] dark:text-[#4d3f71]"
             >
               {isDarkMode ? <SunIcon /> : <MoonIcon />}
             </button>
 
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#1e5b6f] text-sm font-semibold text-white shadow-lg dark:bg-[#ebbe44] dark:text-[#173450]">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#a992e4] text-sm font-semibold text-[#2d1f4d] shadow-lg dark:bg-[#cdb7ff] dark:text-[#8f79cf]">
               {initials}
             </div>
           </div>
@@ -133,21 +133,21 @@ export default function DashboardShell({
         <div className="grid items-start gap-6 lg:grid-cols-[260px_1fr]">
           <aside
             className={[
-              'fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] transform overflow-y-auto border-r border-[#bfd4db] bg-[#fffbf0]/95 p-5 shadow-xl backdrop-blur-xl transition-transform duration-300 dark:border-[#2e4a63] dark:bg-[#0d1f35]/95 lg:static lg:w-auto lg:max-w-none lg:translate-x-0 lg:rounded-2xl lg:border lg:shadow-lg',
+              'fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] transform overflow-y-auto border-r border-[#d9ccf4] bg-[#fbf8ff]/95 p-5 shadow-xl backdrop-blur-xl transition-transform duration-300 dark:border-[#a28ccc] dark:bg-[#f4edff]/95 lg:static lg:w-auto lg:max-w-none lg:translate-x-0 lg:rounded-2xl lg:border lg:shadow-lg',
               sidebarOpen ? 'translate-x-0' : '-translate-x-full',
             ].join(' ')}
             aria-label="Sidebar"
           >
-            <div className="mb-4 hidden overflow-hidden rounded-xl border border-[#bfd4db] bg-white/80 p-2 shadow md:block dark:border-[#2e4a63] dark:bg-[#112844] lg:block">
+            <div className="mb-4 hidden overflow-hidden rounded-xl border border-[#d9ccf4] bg-white/80 p-2 shadow md:block dark:border-[#a28ccc] dark:bg-[#f1eaff] lg:block">
               <img src={illustration} alt="PrepLens illustration" className="h-24 w-full rounded-lg object-cover" />
             </div>
 
             <div className="flex items-center justify-between lg:hidden">
-              <p className="text-sm font-semibold text-[#3f607b] dark:text-[#dce9f1]">Navigation</p>
+              <p className="text-sm font-semibold text-[#5b4f7a] dark:text-[#4d3f71]">Navigation</p>
               <button
                 type="button"
                 onClick={() => setSidebarOpen(false)}
-                className="rounded-lg border border-[#9cb6c2] px-2 py-1 text-xs text-[#234a6a] dark:border-[#2e4a63] dark:text-[#dce9f1]"
+                className="rounded-lg border border-[#beaee8] px-2 py-1 text-xs text-[#544777] dark:border-[#a28ccc] dark:text-[#4d3f71]"
               >
                 Close
               </button>
@@ -164,8 +164,8 @@ export default function DashboardShell({
                     className={[
                       'rounded-xl px-4 py-3 text-sm font-medium transition duration-200',
                       isActive
-                        ? 'bg-[#173450] text-white shadow-lg dark:bg-[#ebbe44] dark:text-[#173450]'
-                        : 'text-[#2d526f] hover:-translate-y-0.5 hover:bg-[#f6f2de] hover:text-[#173450] dark:text-[#dce9f1] dark:hover:bg-[#16314e] dark:hover:text-[#f4cc61]',
+                        ? 'bg-[#d8c7ff] text-[#2d1f4d] shadow-lg dark:bg-[#d8c7ff] dark:text-[#2d1f4d]'
+                        : 'text-[#5b4f7a] hover:-translate-y-0.5 hover:bg-[#f1ebff] hover:text-[#2d1f4d] dark:text-[#5b4f7a] dark:hover:bg-[#f1ebff] dark:hover:text-[#2d1f4d]',
                     ].join(' ')}
                   >
                     {item.label}
@@ -177,7 +177,7 @@ export default function DashboardShell({
             <button
               type="button"
               onClick={onLogout}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl border border-[#9cb6c2] bg-[#f6f2de] px-4 py-2.5 text-sm font-semibold text-[#173450] transition hover:bg-[#ebbe44] dark:border-[#2e4a63] dark:bg-[#112844] dark:text-[#dce9f1] dark:hover:bg-[#1a3a5b]"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl border border-[#beaee8] bg-[#f1ebff] px-4 py-2.5 text-sm font-semibold text-[#8f79cf] transition hover:bg-[#cdb7ff] dark:border-[#a28ccc] dark:bg-[#f1eaff] dark:text-[#4d3f71] dark:hover:bg-[#e5d8ff]"
             >
               <LogoutIcon />
               Logout
@@ -187,7 +187,7 @@ export default function DashboardShell({
           {sidebarOpen && (
             <button
               type="button"
-              className="fixed inset-0 z-30 bg-[#071425]/45 lg:hidden"
+              className="fixed inset-0 z-30 bg-[#f0e6ff]/45 lg:hidden"
               onClick={() => setSidebarOpen(false)}
               aria-label="Close sidebar"
             />
@@ -199,3 +199,6 @@ export default function DashboardShell({
     </div>
   );
 }
+
+
+
