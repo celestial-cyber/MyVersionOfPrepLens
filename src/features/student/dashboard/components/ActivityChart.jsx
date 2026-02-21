@@ -1,0 +1,77 @@
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Tooltip,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+
+export default function ActivityChart({ data }) {
+  if (!data.length) {
+    return (
+      <section className="dashboard-section">
+        <h3 className="dashboard-section-title">Weekly Activity</h3>
+        <p className="dashboard-empty">No activities logged yet.</p>
+      </section>
+    );
+  }
+
+  const labels = data.map((point) => point.label);
+  const values = data.map((point) => point.value);
+
+  const chartData = {
+    labels,
+    datasets: [
+      {
+        label: 'Study Hours',
+        data: values,
+        backgroundColor: '#b5b5b5',
+        borderColor: '#8f8f8f',
+        borderWidth: 1,
+        borderRadius: 6,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          color: '#333',
+        },
+        grid: {
+          color: '#e5e5e5',
+        },
+      },
+      x: {
+        ticks: {
+          color: '#333',
+        },
+        grid: {
+          display: false,
+        },
+      },
+    },
+  };
+
+  return (
+    <section className="dashboard-section dashboard-section-hover">
+      <h3 className="dashboard-section-title">Weekly Activity</h3>
+      <div className="chart-wrap">
+        <Bar data={chartData} options={options} />
+      </div>
+    </section>
+  );
+}
