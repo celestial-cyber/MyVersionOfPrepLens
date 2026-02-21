@@ -9,7 +9,11 @@ import {
   Tooltip,
 } from 'chart.js';
 import StudentTable from '../components/StudentTable';
-import { getActivitiesByUserId, getAllStudents } from '../services/adminDataService';
+import {
+  getActivitiesByUserId,
+  getAllStudents,
+  subscribeAllStudents,
+} from '../services/adminDataService';
 import '../styles/admin.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
@@ -38,8 +42,20 @@ export default function StudentList() {
     }
 
     loadStudents();
+    const unsubscribe = subscribeAllStudents(
+      (allStudents) => {
+        if (!isMounted) return;
+        setStudents(allStudents);
+      },
+      (loadError) => {
+        if (!isMounted) return;
+        setError(loadError.message || 'Failed to keep students in sync.');
+      }
+    );
+
     return () => {
       isMounted = false;
+      unsubscribe();
     };
   }, []);
 

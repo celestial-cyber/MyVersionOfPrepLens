@@ -10,7 +10,8 @@ import {
   Tooltip,
 } from 'chart.js';
 import StatsCards from '../components/StatsCards';
-import { getAllStudents } from '../services/adminDataService';
+import StudentTable from '../components/StudentTable';
+import { getAllStudents, subscribeAllStudents } from '../services/adminDataService';
 import { calculateReadinessScore } from '../utils/readinessScore';
 import '../styles/admin.css';
 
@@ -38,8 +39,20 @@ export default function AdminDashboard() {
     }
 
     loadDashboard();
+    const unsubscribe = subscribeAllStudents(
+      (allStudents) => {
+        if (!isMounted) return;
+        setStudents(allStudents);
+      },
+      (loadError) => {
+        if (!isMounted) return;
+        setError(loadError.message || 'Failed to keep dashboard in sync.');
+      }
+    );
+
     return () => {
       isMounted = false;
+      unsubscribe();
     };
   }, []);
 
@@ -120,6 +133,12 @@ export default function AdminDashboard() {
           />
         </article>
       </div>
+
+      <article className="admin-card">
+        <h3>Student Progress Snapshot</h3>
+        <p className="admin-subtext">Click any row in Students page for detailed activity chart.</p>
+        <StudentTable students={students} />
+      </article>
     </section>
   );
 }
