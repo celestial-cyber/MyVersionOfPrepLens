@@ -1,186 +1,129 @@
-# Student Branch Documentation and Admin Integration Guide
+# PrepLens Progress Update (Student + Admin Integrated)
 
-## 1) What this branch currently contains
+## 1) Current Branch State
 
-### App/runtime setup
-- Vite + React app scaffold
-- Router setup in `src/App.jsx`
-- Firebase SDK integrated (`firebase`, `auth`, `firestore`)
-- Chart.js used for student activity chart
-
-### Auth
-- Firebase email/password auth flow
-- Register/login pages:
-  - `src/pages/Register.jsx`
-  - `src/pages/Login.jsx`
-- Auth service:
-  - `src/services/authService.js`
-- Protected routes:
-  - `src/components/common/ProtectedRoute.jsx`
-
-### Student module moved to feature folder
-All student dashboard code is grouped under:
-- `src/features/student/`
-
-Structure:
-- `layout/`:
-  - `StudentLayout.jsx`
-  - `Navbar.jsx`
-  - `studentLayout.css`
-- `pages/`:
-  - `StudentDashboard.jsx`
-  - `LogActivity.jsx`
-- `dashboard/components/`:
-  - `SummaryCards.jsx`
-  - `ActivityChart.jsx` (Chart.js)
-  - `StreakCard.jsx`
-  - `TaskList.jsx`
-- `services/`:
-  - `activityService.js`
-  - `taskService.js`
-  - `studentDataService.js`
-- `styles/`:
-  - `studentDashboard.css`
-
-### Styling conventions now in place
-- Global link style: black/gray and no underline
-- Global button style: black solid button box
-- File: `src/styles/global.css`
-
-### Environment/config
-- Firebase config read from `.env` via:
-  - `VITE_FIREBASE_API_KEY`
-  - `VITE_FIREBASE_AUTH_DOMAIN`
-  - `VITE_FIREBASE_PROJECT_ID`
-  - `VITE_FIREBASE_STORAGE_BUCKET`
-  - `VITE_FIREBASE_MESSAGING_SENDER_ID`
-  - `VITE_FIREBASE_APP_ID`
-- Runtime config file:
+The project now runs with a **shared base architecture** and feature-scoped modules:
+- Shared base:
+  - `src/App.jsx`
+  - `src/main.jsx`
   - `src/firebase.js`
+  - `src/services/authService.js`
+  - `src/components/common/ProtectedRoute.jsx`
+  - `src/styles/global.css`
+- Student feature:
+  - `src/features/student/**`
+- Admin feature:
+  - `src/features/admin/**`
 
-## 2) Data model contract (used by student side)
+Legacy duplicate admin files (old top-level `src/pages/Admin*.jsx`, `src/firebase/config.js`, etc.) are no longer used.
 
-If admin branch writes to this contract, student dashboard updates in real-time.
+## 2) Auth + Routing (Demo Presentation Mode)
 
-### Collections and docs
-- `profiles/{uid}`
-  - `name: string`
-  - `email: string`
-  - `targetExam: string`
-  - `grade: string`
+### Single login page for both roles
+- Shared login page: `src/pages/Login.jsx`
+- Demo allowed emails:
+  - `admin@email.com`
+  - `student@email.com`
+- Role is inferred from email for jury demo flow.
 
-- `progress/{uid}`
-  - `readinessScore: number`
-  - `streakDays: number`
-  - `completedTasks: number`
+### Role-based route protection
+- Implemented via `ProtectedRoute` + `allowedRoles`.
+- Student protected routes:
+  - `/student/dashboard`
+  - `/student/log`
+  - `/student/messages`
+- Admin protected routes:
+  - `/admin/dashboard`
+  - `/admin/students`
+  - `/admin/create-task`
+- `/admin/login` now redirects to `/login` (single-login experience).
 
-- `tasks/{taskId}`
-  - `userId: string` (Firebase uid)
-  - `title: string`
-  - `completed: boolean`
+## 3) Firestore Data Contract Alignment
 
-- `activities/{activityId}`
-  - `userId: string` (Firebase uid)
-  - `day: string`
-  - `hours: number`
-  - `topic: string`
-  - `createdAt: timestamp`
+Student and admin flows are aligned on the same contract:
+- `profiles/{uid}` -> `name, email, targetExam, grade`
+- `progress/{uid}` -> `readinessScore, streakDays, completedTasks`
+- `tasks/{taskId}` -> `userId, title, completed`
+- `activities/{activityId}` -> `userId, day, hours, topic, createdAt`
 
-## 3) Common base files for both student + admin branches
+### Verified shared behavior
+- Admin creates tasks into `tasks` with `userId`.
+- Student dashboard subscribes to tasks filtered by same `userId`.
+- Result: admin-assigned tasks are visible in student dashboard.
 
-These should be kept single-source shared files:
-- `src/firebase.js`
+## 4) New Student/Admin Interaction Added
+
+### Admin -> Student messages
+- Admin can append a message while creating a task.
+- New student page: `src/features/student/pages/StudentMessages.jsx`
+- Service: `src/features/student/services/messageService.js`
+- Firestore collection used: `messages`
+  - `userId`, `text`, `from`, `createdAt`
+
+### Student navigation updated
+- Added “Admin Messages” link in:
+  - `src/features/student/layout/Navbar.jsx`
+  - `src/features/student/layout/StudentLayout.jsx`
+
+## 5) Daily Log Backend Improvements
+
+Updated `src/features/student/services/activityService.js`:
+- Input validation for hours and auth presence.
+- On activity log, updates `progress/{uid}` with:
+  - incremented `streakDays`
+  - updated `readinessScore` baseline
+- Maintains local fallback behavior if Firebase is unavailable.
+
+## 6) UI/Styling Progress
+
+### Monochrome visual alignment
+- Global black/white/gray style remains in `src/styles/global.css`.
+- Admin styling updated to match student monochrome language:
+  - `src/features/admin/styles/admin.css`
+  - Monochrome chart colors in admin pages.
+
+## 7) Files Added/Changed in This Progress Phase
+
+### Added
+- `src/features/student/pages/StudentMessages.jsx`
+- `src/features/student/services/messageService.js`
+
+### Updated
+- `src/App.jsx`
+- `src/pages/Login.jsx`
 - `src/services/authService.js`
 - `src/components/common/ProtectedRoute.jsx`
-- `src/styles/global.css`
-- `src/App.jsx` (root route registry only)
-- `src/main.jsx`
-- `.env.example`
-- `package.json`
+- `src/features/admin/pages/AdminDashboard.jsx`
+- `src/features/admin/pages/StudentList.jsx`
+- `src/features/admin/pages/CreateTask.jsx`
+- `src/features/admin/styles/admin.css`
+- `src/features/student/services/activityService.js`
+- `src/features/student/layout/Navbar.jsx`
+- `src/features/student/layout/StudentLayout.jsx`
+- `src/features/student/styles/studentDashboard.css`
 
-Feature-specific files should stay isolated:
-- `src/features/student/**`
-- `src/features/admin/**` (to be created/migrated similarly)
+### Removed
+- `src/features/admin/pages/AdminLogin.jsx` (single-login model now used)
 
-## 4) How to integrate admin branch safely
+## 8) Demo Notes for Jury
 
-## Step A: move admin code to feature folder first
-Before merging, in admin branch, move admin files to:
-- `src/features/admin/layout/`
-- `src/features/admin/pages/`
-- `src/features/admin/services/`
-- `src/features/admin/styles/`
+For demonstration, use:
+- Admin login: `admin@email.com`
+- Student login: `student@email.com`
 
-This avoids collisions with student files.
+Suggested demo flow:
+1. Login as admin.
+2. Create a task + message for student.
+3. Login as student.
+4. Show task visibility on dashboard and message visibility on `/student/messages`.
 
-## Step B: unify shared services
-When merging, keep exactly one copy of:
-- `src/firebase.js`
-- `src/services/authService.js`
+## 9) Known Demo Constraints
 
-If both branches changed them, merge manually and preserve:
-- env-based Firebase config from this branch
-- all auth methods needed by both dashboards
+- Current email-based role split is intentionally simplified for presentation.
+- Production flow should enforce roles from Firebase Auth + Firestore rules/custom claims.
+- Firestore security rules should explicitly allow admin writes and user-scoped student reads.
 
-## Step C: unify router
-In `src/App.jsx` register both route trees:
-- `/student/*` -> `features/student/...`
-- `/admin/*` -> `features/admin/...`
+## 10) Next Recommended Step After Jury
 
-Keep login/register common unless admin needs separate auth UI.
-
-## Step D: merge dependencies once
-In `package.json` keep union of deps from both branches.
-Do not duplicate version entries.
-
-Current student-side required deps:
-- `firebase`
-- `react-router-dom`
-- `chart.js`
-- `react-chartjs-2`
-
-## Step E: standardize Firestore schema
-Admin writes must match the student contract in section 2.
-If admin currently writes different field names, add a mapping layer in admin services.
-
-## Step F: Firestore security rules (minimum)
-Use uid-scoped rules for student reads and controlled admin writes.
-At minimum:
-- student can read/write their own docs
-- admin role can read/write all
-
-Role source can be custom claims or a `roles/{uid}` doc.
-
-## 5) Merge conflict hotspots and resolution policy
-
-Likely conflict files:
-- `src/App.jsx`
-- `src/firebase.js`
-- `src/services/authService.js`
-- `package.json`
-- `src/styles/global.css`
-
-Resolution policy:
-1. Keep shared/base files in root shared locations.
-2. Keep all feature code in `src/features/{featureName}`.
-3. Prefer additive merges in router and package deps.
-4. Never duplicate firebase init in multiple files.
-5. Keep one auth source (`src/services/authService.js`).
-
-## 6) Quick validation checklist after merge
-
-- `npm install`
-- `npm run build`
-- login works for student
-- login works for admin
-- student route renders
-- admin route renders
-- admin update to `profiles/progress/tasks/activities` reflects on student dashboard live
-
-## 7) Optional next improvement
-
-Add explicit barrel exports to reduce import path churn:
-- `src/features/student/index.js`
-- `src/features/admin/index.js`
-
-This keeps `App.jsx` cleaner and future merges easier.
+- Replace demo email-role logic with secure role checks from backend claims or `roles/{uid}`.
+- Add an admin message center (separate from task creation) for richer communication.
