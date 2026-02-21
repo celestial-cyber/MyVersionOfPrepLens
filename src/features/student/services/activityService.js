@@ -1,10 +1,11 @@
 import {
   addDoc,
   collection,
-  getDocs,
-  onSnapshot,
+  deleteDoc,
   doc,
   getDoc,
+  getDocs,
+  onSnapshot,
   query,
   setDoc,
   serverTimestamp,
@@ -234,4 +235,26 @@ export function subscribeActivitiesForUser(userId, callback) {
     callback([]);
     return () => {};
   }
+}
+
+export async function deleteActivityForUser({ userId, activityId }) {
+  if (!userId) throw new Error('User is required.');
+  if (!activityId) throw new Error('Activity is required.');
+
+  if (!db) {
+    const items = getLocalActivities();
+    const nextItems = items.filter((item) => !(item.id === activityId && item.userId === userId));
+    setLocalActivities(nextItems);
+    return;
+  }
+
+  const activityRef = doc(db, 'activities', activityId);
+  const activitySnap = await getDoc(activityRef);
+  if (!activitySnap.exists()) return;
+  const data = activitySnap.data() || {};
+  const ownerId = data.userId || data.uid;
+  if (ownerId !== userId) {
+    throw new Error('You can only delete your own activity.');
+  }
+  await deleteDoc(activityRef);
 }

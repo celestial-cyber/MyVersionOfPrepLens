@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import StudentTable from '../components/StudentTable';
 import {
+  deleteAdminTask,
   getActivitiesByUserId,
   getAllStudents,
   getTasksByUserId,
@@ -28,6 +29,7 @@ export default function StudentList() {
   const [filterBy, setFilterBy] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deletingTaskId, setDeletingTaskId] = useState('');
 
   useEffect(() => {
     let isMounted = true;
@@ -77,6 +79,27 @@ export default function StudentList() {
       setStudentTasks(tasks);
     } catch (loadError) {
       setError(loadError.message || 'Failed to load activities for student.');
+    }
+  }
+
+  async function handleDeleteTask(taskId) {
+    if (!selectedStudent) return;
+    const shouldDelete = window.confirm('Delete this assigned task?');
+    if (!shouldDelete) return;
+    setDeletingTaskId(taskId);
+    setError('');
+    try {
+      await deleteAdminTask(taskId);
+      const [tasks, allStudents] = await Promise.all([
+        getTasksByUserId(selectedStudent.uid || selectedStudent.id),
+        getAllStudents(),
+      ]);
+      setStudentTasks(tasks);
+      setStudents(allStudents);
+    } catch (deleteError) {
+      setError(deleteError.message || 'Failed to delete task.');
+    } finally {
+      setDeletingTaskId('');
     }
   }
 
@@ -262,7 +285,17 @@ export default function StudentList() {
               {studentTasks.slice(0, 6).map((task) => (
                 <li key={task.id} className="admin-task-progress-item">
                   <span>{task.title}</span>
-                  <strong>{task.status === 'in_progress' ? 'In Progress' : task.completed ? 'Completed' : 'Pending'}</strong>
+                  <div className="admin-task-progress-actions">
+                    <strong>{task.status === 'in_progress' ? 'In Progress' : task.completed ? 'Completed' : 'Pending'}</strong>
+                    <button
+                      type="button"
+                      className="admin-task-delete-btn"
+                      disabled={deletingTaskId === task.id}
+                      onClick={() => handleDeleteTask(task.id)}
+                    >
+                      {deletingTaskId === task.id ? 'Deleting...' : 'Delete'}
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>

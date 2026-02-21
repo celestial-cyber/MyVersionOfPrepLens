@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { logActivity } from '../services/activityService';
-import { getCurrentStudent } from '../../../services/authService';
+import { useEffect, useState } from 'react';
+import { deleteActivityForUser, logActivity, subscribeActivitiesForUser } from '../services/activityService';
+import { getCurrentStudent, subscribeToStudentAuth } from '../../../services/authService';
 import '../styles/studentDashboard.css';
 
 const CATEGORY_OPTIONS = [
@@ -11,6 +11,9 @@ const CATEGORY_OPTIONS = [
 ];
 
 export default function LogActivity() {
+  const [student, setStudent] = useState(getCurrentStudent());
+  const [activities, setActivities] = useState([]);
+  const [deletingActivityId, setDeletingActivityId] = useState('');
   const [topic, setTopic] = useState('');
   const [hours, setHours] = useState(1);
   const [category, setCategory] = useState('technical');
@@ -32,6 +35,41 @@ export default function LogActivity() {
       setError(submitError.message || 'Could not log activity.');
     }
   };
+
+  useEffect(() => {
+    let stopActivities = () => {};
+    const stopAuth = subscribeToStudentAuth((user) => {
+      setStudent(user);
+      stopActivities();
+      if (!user?.uid) {
+        setActivities([]);
+        return;
+      }
+      stopActivities = subscribeActivitiesForUser(user.uid, setActivities);
+    });
+
+    return () => {
+      stopActivities();
+      stopAuth();
+    };
+  }, []);
+
+  async function handleDeleteActivity(activityId) {
+    const userId = student?.uid || '';
+    if (!userId) return;
+    const shouldDelete = window.confirm('Delete this activity log?');
+    if (!shouldDelete) return;
+    setDeletingActivityId(activityId);
+    setError('');
+    try {
+      await deleteActivityForUser({ userId, activityId });
+      setMessage('Activity deleted successfully.');
+    } catch (deleteError) {
+      setError(deleteError.message || 'Could not delete activity.');
+    } finally {
+      setDeletingActivityId('');
+    }
+  }
 
   return (
     <section className="dashboard-page">
@@ -75,6 +113,34 @@ export default function LogActivity() {
       </form>
       {message && <p className="feedback-success">{message}</p>}
       {error && <p className="feedback-error">{error}</p>}
+
+      <section className="dashboard-section dashboard-section-hover">
+        <h3 className="dashboard-section-title">Recent Activity Logs</h3>
+        {!activities.length ? (
+          <p className="dashboard-empty">No activity logs yet.</p>
+        ) : (
+          <ul className="activity-list">
+            {activities.slice(0, 8).map((activity) => (
+              <li key={activity.id} className="activity-item">
+                <div>
+                  <p className="activity-title">{activity.topic}</p>
+                  <p className="activity-meta">
+                    {activity.hours} hr | {activity.category} | {new Date(activity.createdAt || Date.now()).toLocaleString()}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="item-delete-btn"
+                  disabled={deletingActivityId === activity.id}
+                  onClick={() => handleDeleteActivity(activity.id)}
+                >
+                  {deletingActivityId === activity.id ? 'Deleting...' : 'Delete'}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </section>
   );
 }

@@ -132,6 +132,8 @@
 
 .task-select-label {
   min-width: 132px;
+  display: grid;
+  gap: 0.4rem;
 }
 
 .task-select {
@@ -146,6 +148,21 @@
 .task-select:focus {
   outline: 2px solid rgba(80, 80, 80, 0.28);
   border-color: #3f3f3f;
+}
+
+.task-delete-btn {
+  border: 1px solid #111111;
+  border-radius: 0.7rem;
+  padding: 0.35rem 0.55rem;
+  background: #111111;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.task-delete-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .task-status {
@@ -257,6 +274,12 @@
     gap: 0.5rem;
   }
 
+  .activity-item,
+  .message-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .task-select-label {
     min-width: 100%;
   }
@@ -308,6 +331,13 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
 }
 
+.message-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
 .message-text {
   margin: 0 0 0.4rem;
   color: #222222;
@@ -317,6 +347,52 @@
   margin: 0;
   font-size: 0.75rem;
   color: #666666;
+}
+
+.activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid #d4d4d4;
+  background: #ffffff;
+  border-radius: 0.85rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.activity-title {
+  margin: 0 0 0.2rem;
+  font-weight: 600;
+  color: #222222;
+}
+
+.activity-meta {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #666666;
+}
+
+.item-delete-btn {
+  border: 1px solid #111111;
+  border-radius: 0.65rem;
+  background: #111111;
+  color: #ffffff;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.item-delete-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .form-card {

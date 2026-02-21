@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -482,4 +483,25 @@ export async function getTasksByUserId(userId) {
     ...personal.docs.map((item) => normalizeTask(item.id, item.data())),
     ...global.docs.map((item) => normalizeTask(item.id, item.data())),
   ]).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+}
+
+export async function deleteAdminTask(taskId) {
+  const normalizedTaskId = String(taskId || '').trim();
+  if (!normalizedTaskId) {
+    throw new Error('Task ID is required.');
+  }
+
+  if (!db) {
+    if (!canUseStorage()) {
+      throw new Error('Unable to delete task in this environment.');
+    }
+    const raw = window.localStorage.getItem(LOCAL_TASKS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    const tasks = Array.isArray(parsed) ? parsed : [];
+    const nextTasks = tasks.filter((task) => task.id !== normalizedTaskId);
+    window.localStorage.setItem(LOCAL_TASKS_KEY, JSON.stringify(nextTasks));
+    return;
+  }
+
+  await deleteDoc(doc(db, 'tasks', normalizedTaskId));
 }

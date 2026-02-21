@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -235,6 +236,48 @@ export async function updateTaskProgress({ userId, taskId, status }) {
       completed,
       updatedAt: Date.now(),
     });
+  }
+
+  await syncCompletedTaskCount(userId);
+}
+
+export async function deleteTaskForUser({ userId, taskId }) {
+  if (!userId) throw new Error('User is required.');
+  if (!taskId) throw new Error('Task is required.');
+
+  if (!db) {
+    if (!canUseStorage()) throw new Error('Unable to delete task in this environment.');
+    const raw = window.localStorage.getItem(LOCAL_TASKS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    const tasks = Array.isArray(parsed) ? parsed : [];
+    const nextTasks = tasks.filter((task) => {
+      if (task.id !== taskId) return true;
+      const isOwner = task.userId === userId;
+      const isGlobal = task.userId === GLOBAL_TASK_USER_ID || task.scope === 'all';
+      return !isOwner && !isGlobal;
+    });
+    window.localStorage.setItem(LOCAL_TASKS_KEY, JSON.stringify(nextTasks));
+    await syncCompletedTaskCount(userId);
+    return;
+  }
+
+  const taskRef = doc(db, 'tasks', taskId);
+  const taskSnap = await getDoc(taskRef);
+  if (!taskSnap.exists()) return;
+  const taskData = taskSnap.data() || {};
+  const isGlobalTemplateTask =
+    taskData.userId === GLOBAL_TASK_USER_ID || String(taskData.scope || '').toLowerCase() === 'all';
+
+  if (isGlobalTemplateTask) {
+    const personalTaskRef = doc(db, 'tasks', `${taskId}__${userId}`);
+    const personalSnap = await getDoc(personalTaskRef);
+    if (personalSnap.exists()) {
+      await deleteDoc(personalTaskRef);
+    } else {
+      throw new Error('Shared task cannot be deleted directly.');
+    }
+  } else {
+    await deleteDoc(taskRef);
   }
 
   await syncCompletedTaskCount(userId);

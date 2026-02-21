@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { updateTaskProgress } from '../../services/taskService';
+import { deleteTaskForUser, updateTaskProgress } from '../../services/taskService';
 
 const TASK_STATUS_OPTIONS = [
   { value: 'pending', label: 'Pending' },
@@ -9,6 +9,7 @@ const TASK_STATUS_OPTIONS = [
 
 export default function TaskList({ tasks, userId }) {
   const [updatingTaskId, setUpdatingTaskId] = useState('');
+  const [deletingTaskId, setDeletingTaskId] = useState('');
 
   async function handleStatusChange(taskId, status) {
     if (!userId) return;
@@ -19,6 +20,20 @@ export default function TaskList({ tasks, userId }) {
       console.error('Failed to update task status.', error);
     } finally {
       setUpdatingTaskId('');
+    }
+  }
+
+  async function handleDelete(taskId) {
+    if (!userId) return;
+    const shouldDelete = window.confirm('Delete this task? This action cannot be undone.');
+    if (!shouldDelete) return;
+    setDeletingTaskId(taskId);
+    try {
+      await deleteTaskForUser({ userId, taskId });
+    } catch (error) {
+      console.error('Failed to delete task.', error);
+    } finally {
+      setDeletingTaskId('');
     }
   }
 
@@ -48,7 +63,7 @@ export default function TaskList({ tasks, userId }) {
                 className="task-select"
                 aria-label={`Update status for ${task.title}`}
                 value={task.status || (task.completed ? 'completed' : 'pending')}
-                disabled={updatingTaskId === task.id}
+                disabled={updatingTaskId === task.id || deletingTaskId === task.id}
                 onChange={(event) => handleStatusChange(task.id, event.target.value)}
               >
                 {TASK_STATUS_OPTIONS.map((option) => (
@@ -57,6 +72,14 @@ export default function TaskList({ tasks, userId }) {
                   </option>
                 ))}
               </select>
+              <button
+                type="button"
+                className="task-delete-btn"
+                disabled={deletingTaskId === task.id}
+                onClick={() => handleDelete(task.id)}
+              >
+                {deletingTaskId === task.id ? 'Deleting...' : 'Delete'}
+              </button>
             </label>
           </li>
         ))}

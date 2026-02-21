@@ -1,6 +1,9 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
+  getDoc,
   onSnapshot,
   orderBy,
   query,
@@ -98,4 +101,24 @@ export function subscribeMessagesForUser(userId, callback) {
       callback([]);
     }
   );
+}
+
+export async function deleteMessageForUser({ userId, messageId }) {
+  if (!userId) throw new Error('User is required.');
+  if (!messageId) throw new Error('Message is required.');
+
+  if (!db) {
+    const next = getLocalMessages().filter((item) => !(item.id === messageId && item.userId === userId));
+    setLocalMessages(next);
+    return;
+  }
+
+  const messageRef = doc(db, 'messages', messageId);
+  const messageSnap = await getDoc(messageRef);
+  if (!messageSnap.exists()) return;
+  const message = messageSnap.data() || {};
+  if (message.userId !== userId) {
+    throw new Error('You can only delete your own message.');
+  }
+  await deleteDoc(messageRef);
 }
