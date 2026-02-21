@@ -318,8 +318,8 @@
 .dark .admin-auth-form,
 .dark .admin-card,
 .dark .admin-table-wrap {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(0, 0, 0, 0.88);
+  border-color: rgba(95, 137, 170, 0.45);
+  background: rgba(13, 31, 53, 0.9);
   color: #e6e6e6;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
 }
@@ -338,9 +338,9 @@
 .dark .admin-form input,
 .dark .admin-form select,
 .dark .admin-form textarea {
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(17, 40, 68, 0.95);
   color: #e6e6e6;
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(95, 137, 170, 0.55);
 }
 
 .dark .admin-table td {
@@ -348,11 +348,11 @@
 }
 
 .dark .admin-table th {
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(17, 40, 68, 0.95);
 }
 
 .dark .admin-progress-wrap {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(95, 137, 170, 0.6);
   background: rgba(20, 20, 20, 0.95);
 }
 
@@ -369,14 +369,14 @@
 }
 
 .dark .admin-controls select {
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(17, 40, 68, 0.95);
   color: #e6e6e6;
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(95, 137, 170, 0.55);
 }
 
 .dark .admin-weak-item {
-  background: rgba(0, 0, 0, 0.92);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(13, 31, 53, 0.92);
+  border-color: rgba(95, 137, 170, 0.55);
 }
 
 @media (max-width: 1024px) {
@@ -419,6 +419,7 @@
     min-width: 980px;
   }
 }
+
 
 
 

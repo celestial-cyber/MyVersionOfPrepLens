@@ -30,6 +30,8 @@ export default function StudentList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deletingTaskId, setDeletingTaskId] = useState('');
+  const [page, setPage] = useState(1);
+  const pageSize = 8;
 
   useEffect(() => {
     let isMounted = true;
@@ -195,6 +197,13 @@ export default function StudentList() {
     });
   }, [students, sortBy, filterBy]);
 
+  useEffect(() => {
+    setPage(1);
+  }, [sortBy, filterBy]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredAndSortedStudents.length / pageSize));
+  const paginatedStudents = filteredAndSortedStudents.slice((page - 1) * pageSize, page * pageSize);
+
   const summary = useMemo(() => {
     const now = Date.now();
     const activeCutoff = now - 3 * 24 * 60 * 60 * 1000;
@@ -262,7 +271,26 @@ export default function StudentList() {
             </select>
           </div>
 
-          <StudentTable students={filteredAndSortedStudents} onSelect={handleSelect} scrollable />
+          <StudentTable students={paginatedStudents} onSelect={handleSelect} scrollable />
+          <div className="admin-controls">
+            <p className="admin-subtext">Page {page} of {totalPages}</p>
+            <button
+              type="button"
+              className="admin-primary-btn"
+              disabled={page <= 1}
+              onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              className="admin-primary-btn"
+              disabled={page >= totalPages}
+              onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+            >
+              Next
+            </button>
+          </div>
         </>
       )}
 

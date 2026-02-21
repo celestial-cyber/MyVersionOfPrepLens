@@ -5,6 +5,9 @@ import { getCurrentStudent, logoutStudent } from '../../../services/authService'
 const navItems = [
   { to: '/admin/dashboard', label: 'Overview' },
   { to: '/admin/students', label: 'Students' },
+  { to: '/admin/tests', label: 'Tests' },
+  { to: '/admin/goals', label: 'Goals' },
+  { to: '/admin/report', label: 'Coordinator Report' },
   { to: '/admin/create-task', label: 'Create Task' },
 ];
 

@@ -15,12 +15,16 @@ import StatsCards from '../components/StatsCards';
 import StudentTable from '../components/StudentTable';
 import { getAllStudents, subscribeAllStudents } from '../services/adminDataService';
 import { calculateReadinessScore } from '../utils/readinessScore';
+import { buildStudentInsights } from '../../insights/services/insightService';
+import SkeletonCard from '../../../components/common/skeleton/SkeletonCard';
+import useCachedAnalytics from '../../../hooks/useCachedAnalytics';
 import '../styles/admin.css';
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend);
 
 export default function AdminDashboard() {
   const [students, setStudents] = useState([]);
+  const [insights, setInsights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -32,6 +36,7 @@ export default function AdminDashboard() {
         const allStudents = await getAllStudents();
         if (!isMounted) return;
         setStudents(allStudents);
+        setInsights(await buildStudentInsights(allStudents));
       } catch (loadError) {
         if (!isMounted) return;
         setError(loadError.message || 'Failed to load admin dashboard.');
@@ -45,6 +50,7 @@ export default function AdminDashboard() {
       (allStudents) => {
         if (!isMounted) return;
         setStudents(allStudents);
+        buildStudentInsights(allStudents).then((rows) => isMounted && setInsights(rows));
       },
       (loadError) => {
         if (!isMounted) return;
@@ -90,6 +96,7 @@ export default function AdminDashboard() {
       weakStudents,
     };
   }, [students]);
+  const cachedStats = useCachedAnalytics('preplens-admin-stats', () => stats, [stats], 60 * 1000);
 
   const readinessBuckets = useMemo(() => {
     const buckets = { High: 0, Medium: 0, Low: 0 };
@@ -132,16 +139,43 @@ export default function AdminDashboard() {
     return buckets;
   }, [students]);
 
-  const weakStudentsList = useMemo(() => {
-    const weakCutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
-    return students
-      .filter((student) => {
-        const readiness = calculateReadinessScore({ readinessScore: student.readinessScore });
-        return readiness < 40 || (student.lastActiveAt || 0) < weakCutoff || (student.streakDays || 0) <= 1;
-      })
-      .sort((a, b) => (Number(a.readinessScore) || 0) - (Number(b.readinessScore) || 0))
-      .slice(0, 6);
-  }, [students]);
+  const classifiedStudents = useMemo(() => {
+    const insightByUid = new Map(insights.map((item) => [item.uid, item]));
+    const weak = [];
+    const strong = [];
+
+    students.forEach((student) => {
+      const uid = student.uid || student.id;
+      const insight = insightByUid.get(uid);
+      const readiness = Number(student.readinessScore) || 0;
+      const streak = Number(student.streakDays) || 0;
+      const lastActiveAt = Number(student.lastActiveAt) || 0;
+      const isRecentlyActive = lastActiveAt >= Date.now() - 3 * 24 * 60 * 60 * 1000;
+      const hasRisk = Boolean(insight?.isAtRisk);
+
+      // Weak criteria: any risk alert OR low readiness/streak/inactivity
+      if (hasRisk || readiness < 40 || streak <= 1 || !isRecentlyActive) {
+        weak.push({ ...student, insight });
+        return;
+      }
+
+      // Strong criteria: clearly placement-ready and active
+      if (readiness >= 75 && streak >= 5 && isRecentlyActive && insight?.readiness?.indicator === 'Placement Ready') {
+        strong.push({ ...student, insight });
+      }
+    });
+
+    const dedupe = (rows) => {
+      const map = new Map();
+      rows.forEach((row) => map.set(row.uid || row.id, row));
+      return Array.from(map.values());
+    };
+
+    return {
+      weak: dedupe(weak).sort((a, b) => (Number(a.readinessScore) || 0) - (Number(b.readinessScore) || 0)).slice(0, 8),
+      strong: dedupe(strong).sort((a, b) => (Number(b.readinessScore) || 0) - (Number(a.readinessScore) || 0)).slice(0, 8),
+    };
+  }, [students, insights]);
 
   const studentProgressChart = useMemo(() => {
     const ranked = [...students]
@@ -241,7 +275,12 @@ export default function AdminDashboard() {
   );
 
   if (loading) {
-    return <div className="admin-page"><p>Loading dashboard...</p></div>;
+    return (
+      <div className="admin-page">
+        <SkeletonCard rows={4} />
+        <SkeletonCard rows={4} />
+      </div>
+    );
   }
 
   if (error) {
@@ -252,7 +291,7 @@ export default function AdminDashboard() {
     <section className="admin-page admin-dashboard-scroll">
       <div className="admin-dashboard-inner">
         <h1>Admin Dashboard</h1>
-        <StatsCards stats={stats} />
+        <StatsCards stats={cachedStats} />
 
         <div className="admin-chart-grid">
           <article className="admin-card">
@@ -336,17 +375,37 @@ export default function AdminDashboard() {
         </article>
 
         <article className="admin-card">
-          <h3>Automatically Identified Weak Students</h3>
-          {weakStudentsList.length === 0 ? (
-            <p className="admin-subtext">No weak students detected right now.</p>
+          <h3>Strong Students (Placement Ready)</h3>
+          <p className="admin-subtext">Criteria: readiness &gt;= 75, streak &gt;= 5, active in last 3 days, no risk alerts.</p>
+          {classifiedStudents.strong.length === 0 ? (
+            <p className="admin-subtext">No strong students match the criteria currently.</p>
           ) : (
             <ul className="admin-weak-list">
-              {weakStudentsList.map((student) => (
+              {classifiedStudents.strong.map((student) => (
                 <li key={student.uid || student.id} className="admin-weak-item">
                   <strong>{student.name}</strong>
-                  <span>{student.email || 'N/A'}</span>
                   <span>Readiness: {student.readinessScore ?? 0}%</span>
                   <span>Streak: {student.streakDays ?? 0} days</span>
+                  <span>Predictor: {student.insight?.readiness?.indicator || 'N/A'}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </article>
+
+        <article className="admin-card">
+          <h3>Weak Students (Need Intervention)</h3>
+          <p className="admin-subtext">Criteria: any risk alert, or low readiness (&lt;40), or low streak (&lt;=1), or inactive for 3+ days.</p>
+          {classifiedStudents.weak.length === 0 ? (
+            <p className="admin-subtext">No intervention alerts at the moment.</p>
+          ) : (
+            <ul className="admin-weak-list">
+              {classifiedStudents.weak.map((student) => (
+                <li key={student.uid || student.id} className="admin-weak-item">
+                  <strong>{student.name}</strong>
+                  <span>Readiness: {student.readinessScore ?? 0}%</span>
+                  <span>Streak: {student.streakDays ?? 0} days</span>
+                  <span>{student.insight?.riskReasons?.join(' | ') || 'Needs close tracking'}</span>
                 </li>
               ))}
             </ul>

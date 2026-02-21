@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import ActivityChart from '../dashboard/components/ActivityChart';
 import StreakCard from '../dashboard/components/StreakCard';
 import StreakHeatmap from '../dashboard/components/StreakHeatmap';
@@ -10,6 +11,12 @@ import { subscribeStudentProfile, subscribeStudentProgress } from '../services/s
 import { subscribeTasksForUser } from '../services/taskService';
 import { getCurrentStudent, subscribeToStudentAuth } from '../../../services/authService';
 import { calculateReadiness } from '../../../utils/readinessCalculator';
+import { subscribeResultsByUser } from '../../testing/services/testEngineService';
+import { subscribeTestsForStudent } from '../../testing/services/testEngineService';
+import { subscribeNotifications } from '../../notifications/services/notificationService';
+import { pushNotification } from '../../notifications/services/notificationService';
+import { predictPlacementReadiness, consistencyTier } from '../../insights/utils/placementReadiness';
+import { weakAreaMessage } from '../../insights/utils/aiAnalyzer';
 import '../styles/studentDashboard.css';
 
 const CORE_CATEGORIES = ['aptitude', 'technical', 'verbal', 'softskills'];
@@ -34,6 +41,9 @@ export default function StudentDashboard() {
   const [progress, setProgress] = useState(null);
   const [messages, setMessages] = useState([]);
   const [student, setStudent] = useState(getCurrentStudent());
+  const [testResults, setTestResults] = useState([]);
+  const [assignedTests, setAssignedTests] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     let stopActivities = () => {};
@@ -41,6 +51,9 @@ export default function StudentDashboard() {
     let stopProfile = () => {};
     let stopProgress = () => {};
     let stopMessages = () => {};
+    let stopResults = () => {};
+    let stopNotifications = () => {};
+    let stopTests = () => {};
 
     const stopAuth = subscribeToStudentAuth((user) => {
       setStudent(user);
@@ -49,6 +62,9 @@ export default function StudentDashboard() {
       stopProfile();
       stopProgress();
       stopMessages();
+      stopResults();
+      stopNotifications();
+      stopTests();
 
       if (!user?.uid) {
         setActivities([]);
@@ -56,6 +72,9 @@ export default function StudentDashboard() {
         setProfile(null);
         setProgress(null);
         setMessages([]);
+        setTestResults([]);
+        setNotifications([]);
+        setAssignedTests([]);
         return;
       }
 
@@ -64,6 +83,9 @@ export default function StudentDashboard() {
       stopProfile = subscribeStudentProfile(user.uid, setProfile);
       stopProgress = subscribeStudentProgress(user.uid, setProgress);
       stopMessages = subscribeMessagesForUser(user.uid, setMessages);
+      stopResults = subscribeResultsByUser(user.uid, setTestResults);
+      stopNotifications = subscribeNotifications(user.uid, setNotifications);
+      stopTests = subscribeTestsForStudent(user.uid, setAssignedTests);
     });
 
     return () => {
@@ -72,6 +94,9 @@ export default function StudentDashboard() {
       stopProfile();
       stopProgress();
       stopMessages();
+      stopResults();
+      stopNotifications();
+      stopTests();
       stopAuth();
     };
   }, []);
@@ -149,10 +174,67 @@ export default function StudentDashboard() {
       totalTasks: tasks.length,
     });
   const recentMessages = messages.slice(0, 4);
+  const recentNotifications = notifications.slice(0, 4);
+  const avgTestScore = testResults.length
+    ? Math.round(
+        testResults.reduce((sum, item) => sum + (Number(item.score) || 0), 0) / testResults.length
+      )
+    : 0;
+  const weakestCategory = computed.weakAreas[0]?.category || 'aptitude';
+  const consistency = consistencyTier({
+    streakDays: computed.streakDays,
+    activityCount: computed.totalActivities,
+    testAverage: avgTestScore,
+  });
+  const placementPrediction = predictPlacementReadiness({
+    coding: computed.categoryHours.technical || avgTestScore,
+    aptitude: computed.categoryHours.aptitude || avgTestScore,
+    technical: avgTestScore,
+    softSkills: computed.categoryHours.softskills || 0,
+  });
   const stats = {
     ...computed,
     readiness,
   };
+  const attemptedTestIds = useMemo(() => new Set(testResults.map((item) => item.testId)), [testResults]);
+  const pendingTests = useMemo(
+    () => assignedTests.filter((test) => !attemptedTestIds.has(test.id)),
+    [assignedTests, attemptedTestIds]
+  );
+
+  useEffect(() => {
+    if (!student?.uid) return;
+    const storageKey = `preplens-reminder-${student.uid}-${new Date().toDateString()}`;
+    const hasActivityToday = activities.some((item) => {
+      const created = new Date(item.createdAt || 0);
+      return created.toDateString() === new Date().toDateString();
+    });
+    if (!hasActivityToday && !window.localStorage.getItem(storageKey)) {
+      pushNotification({
+        userId: student.uid,
+        title: 'Daily reminder',
+        message: 'You missed activity today. Log at least one focused session.',
+        type: 'reminder',
+      });
+      window.localStorage.setItem(storageKey, '1');
+    }
+  }, [activities, student?.uid]);
+
+  useEffect(() => {
+    if (!student?.uid || testResults.length < 2) return;
+    const latest = Number(testResults[0]?.score) || 0;
+    const previous = Number(testResults[1]?.score) || 0;
+    const guardKey = `preplens-score-alert-${student.uid}-${testResults[0]?.id || 'latest'}`;
+    if (latest + 10 < previous && !window.localStorage.getItem(guardKey)) {
+      pushNotification({
+        userId: student.uid,
+        title: 'Performance alert',
+        message: 'Your score dropped this week. Review weak topics and reattempt practice sets.',
+        type: 'alert',
+      });
+      window.localStorage.setItem(guardKey, '1');
+    }
+  }, [student?.uid, testResults]);
 
   return (
     <div className="dashboard-page">
@@ -165,6 +247,29 @@ export default function StudentDashboard() {
         <p className="dashboard-meta"><strong>Grade:</strong> {profile?.grade || 'Not set'}</p>
       </section>
       <p className="dashboard-readiness">Prep readiness: {readiness}%</p>
+      <section className="dashboard-section dashboard-section-hover">
+        <h3 className="dashboard-section-title">Consistency & Placement Predictor</h3>
+        <p className="dashboard-meta">Consistency tier: <strong>{consistency}</strong></p>
+        <p className="dashboard-meta">Placement readiness predictor: <strong>{placementPrediction.score}%</strong> ({placementPrediction.indicator})</p>
+        <p className="dashboard-meta">Weak area analyzer: {weakAreaMessage(weakestCategory)}</p>
+      </section>
+      <section className="dashboard-section dashboard-section-hover">
+        <h3 className="dashboard-section-title">Assigned Tests</h3>
+        <p className="dashboard-meta">Available tests: {pendingTests.length}</p>
+        <p className="dashboard-meta">Completed tests: {testResults.length}</p>
+        {pendingTests.length > 0 ? (
+          <ul className="dashboard-simple-list">
+            {pendingTests.slice(0, 4).map((test) => (
+              <li key={test.id}>{test.title}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="dashboard-empty">No pending test right now.</p>
+        )}
+        <Link to="/student/tests" className="task-delete-btn" style={{ display: 'inline-block', marginTop: '0.6rem' }}>
+          Attempt Test & View Progress
+        </Link>
+      </section>
       <SummaryCards stats={stats} />
       <ActivityChart
         data={computed.dailyData}
@@ -206,6 +311,16 @@ export default function StudentDashboard() {
       <TaskList tasks={tasks} userId={student?.uid || ''} />
       <section className="dashboard-section dashboard-section-hover">
         <h3 className="dashboard-section-title">Notifications & Admin Messages</h3>
+        {recentNotifications.length > 0 && (
+          <ul className="message-list" style={{ marginBottom: '0.75rem' }}>
+            {recentNotifications.map((note) => (
+              <li key={note.id} className="message-item">
+                <p className="message-text"><strong>{note.title}:</strong> {note.message}</p>
+                <p className="message-time">{new Date(note.createdAt || Date.now()).toLocaleString()}</p>
+              </li>
+            ))}
+          </ul>
+        )}
         {recentMessages.length === 0 ? (
           <p className="dashboard-empty">No new notifications yet.</p>
         ) : (

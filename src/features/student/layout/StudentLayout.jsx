@@ -4,6 +4,10 @@ import { getCurrentStudent, logoutStudent } from '../../../services/authService'
 
 const navItems = [
   { to: '/student/dashboard', label: 'Dashboard' },
+  { to: '/student/tests', label: 'Tests' },
+  { to: '/student/goals', label: 'Goals' },
+  { to: '/student/leaderboard', label: 'Leaderboard' },
+  { to: '/student/interviews', label: 'Mock Interviews' },
   { to: '/student/log', label: 'Log Activity' },
   { to: '/student/messages', label: 'Admin Messages' },
 ];

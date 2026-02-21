@@ -11,6 +11,13 @@ import AdminDashboard from './features/admin/pages/AdminDashboard';
 import StudentList from './features/admin/pages/StudentList';
 import CreateTask from './features/admin/pages/CreateTask';
 import AdminLayout from './features/admin/layout/AdminLayout';
+import StudentTestCenter from './features/testing/pages/StudentTestCenter';
+import AdminTestCenter from './features/testing/pages/AdminTestCenter';
+import StudentGoalCenter from './features/goals/pages/StudentGoalCenter';
+import AdminGoalCenter from './features/goals/pages/AdminGoalCenter';
+import LeaderboardPage from './features/leaderboard/pages/LeaderboardPage';
+import MockInterviewTracker from './features/mockInterview/pages/MockInterviewTracker';
+import CoordinatorReportPage from './features/insights/pages/CoordinatorReportPage';
 
 export default function App() {
   return (
@@ -29,6 +36,10 @@ export default function App() {
       >
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<StudentDashboard />} />
+        <Route path="tests" element={<StudentTestCenter />} />
+        <Route path="goals" element={<StudentGoalCenter />} />
+        <Route path="leaderboard" element={<LeaderboardPage />} />
+        <Route path="interviews" element={<MockInterviewTracker />} />
         <Route path="log" element={<LogActivity />} />
         <Route path="log-activity" element={<LogActivity />} />
         <Route path="messages" element={<StudentMessages />} />
@@ -46,6 +57,9 @@ export default function App() {
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="students" element={<StudentList />} />
+        <Route path="tests" element={<AdminTestCenter />} />
+        <Route path="goals" element={<AdminGoalCenter />} />
+        <Route path="report" element={<CoordinatorReportPage />} />
         <Route path="create-task" element={<CreateTask />} />
       </Route>
 
