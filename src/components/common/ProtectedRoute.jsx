@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import Loader from './Loader';
 import { subscribeToStudentAuth } from '../../services/authService';
 
-export default function ProtectedRoute({ children }) {
+export default function ProtectedRoute({ children, redirectPath = '/login' }) {
   const location = useLocation();
   const [isChecking, setIsChecking] = useState(true);
   const [student, setStudent] = useState(null);
@@ -21,7 +21,7 @@ export default function ProtectedRoute({ children }) {
   }
 
   if (!student) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+    return <Navigate to={redirectPath} replace state={{ from: location.pathname }} />;
   }
 
   return children;

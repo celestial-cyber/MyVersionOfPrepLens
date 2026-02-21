@@ -5,7 +5,8 @@ import {
   signOut,
   updateProfile,
 } from 'firebase/auth';
-import { auth, hasFirebaseConfig } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db, hasFirebaseConfig } from '../firebase';
 
 function ensureAuthReady() {
   if (!hasFirebaseConfig || !auth) {
@@ -31,6 +32,35 @@ export async function loginStudent({ email, password }) {
 export async function logoutStudent() {
   ensureAuthReady();
   await signOut(auth);
+}
+
+export async function isAdminUser(uid) {
+  if (!db || !uid) return false;
+
+  const rolesDoc = await getDoc(doc(db, 'roles', uid));
+  if (rolesDoc.exists()) {
+    const rolesData = rolesDoc.data() || {};
+    if (rolesData.role === 'admin' || rolesData.isAdmin === true || rolesData.admin === true) {
+      return true;
+    }
+  }
+
+  const profileDoc = await getDoc(doc(db, 'profiles', uid));
+  if (!profileDoc.exists()) return false;
+  const profileData = profileDoc.data() || {};
+  return profileData.role === 'admin' || profileData.isAdmin === true;
+}
+
+export async function loginAdmin({ email, password }) {
+  const user = await loginStudent({ email, password });
+  const allowed = await isAdminUser(user.uid);
+
+  if (!allowed) {
+    await logoutStudent();
+    throw new Error('Unauthorized: admin access required.');
+  }
+
+  return user;
 }
 
 export function getCurrentStudent() {
