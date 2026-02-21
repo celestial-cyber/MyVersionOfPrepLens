@@ -26,11 +26,21 @@ export default function CoordinatorReportPage() {
     const avgReadiness = students.length
       ? Math.round(students.reduce((sum, item) => sum + (Number(item.readinessScore) || 0), 0) / students.length)
       : 0;
-    const readyStudents = [...students]
+    const dedupedStudents = Array.from(new Map(students.map((student) => [student.uid, student])).values());
+    const threeDaysAgo = Date.now() - 3 * 24 * 60 * 60 * 1000;
+    const lowActivityStudents = dedupedStudents.filter((student) => {
+      const lastActiveAt = Number(student.lastActiveAt) || 0;
+      const totalActivities = Number(student.totalActivities) || 0;
+      return lastActiveAt < threeDaysAgo || totalActivities <= 2;
+    });
+    const lowActivityIds = new Set(lowActivityStudents.map((student) => student.uid));
+
+    const readyStudents = dedupedStudents
+      .filter((student) => !lowActivityIds.has(student.uid))
       .sort((a, b) => (Number(b.readinessScore) || 0) - (Number(a.readinessScore) || 0))
       .slice(0, 10);
-    const atRiskIds = new Set(insights.filter((item) => item.isAtRisk).map((item) => item.uid));
-    const atRiskStudents = students.filter((item) => atRiskIds.has(item.uid));
+    const atRiskStudents = lowActivityStudents
+      .sort((a, b) => (Number(a.totalActivities) || 0) - (Number(b.totalActivities) || 0));
 
     return { avgReadiness, readyStudents, atRiskStudents };
   }, [students, insights]);

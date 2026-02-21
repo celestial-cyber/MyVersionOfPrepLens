@@ -164,6 +164,17 @@ export default function AdminTestCenter() {
                 <strong>{studentNameMap.get(report.uid) || report.uid}</strong>
                 <span>Weakest: {report.weakestCategory}</span>
                 <span>Strengths: {report.strengths.join(' | ')}</span>
+                <span>
+                  Metrics: Accuracy {report.performanceMetrics?.accuracy ?? '-'}% | Completion {report.performanceMetrics?.completionRate ?? '-'}%
+                </span>
+                <span>
+                  Category Marks:{' '}
+                  {(report.categorySpecificMarks || []).map((item) => (
+                    <strong key={`${report.id}-${item.category}`} style={{ color: item.color, marginRight: 8 }}>
+                      {item.label}: {item.marks}%
+                    </strong>
+                  ))}
+                </span>
                 <span>Plan: {report.improvementPlan.join(' | ')}</span>
                 <span>Lacking: {(report.lackingAreas || []).join(' | ') || 'No major lacking area detected'}</span>
                 <button type="button" className="task-delete-btn" onClick={() => downloadAiReportPdf(report, 'PrepLens Admin AI Report')}>

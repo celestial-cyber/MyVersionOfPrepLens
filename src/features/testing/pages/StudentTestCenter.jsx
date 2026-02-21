@@ -173,6 +173,17 @@ export default function StudentTestCenter() {
                     <span>Strong: {report.strengths.join(' | ')}</span>
                     <span>Weak: {report.weaknesses.join(' | ')}</span>
                     <span>Lacking: {(report.lackingAreas || []).join(' | ') || 'No major lacking area detected'}</span>
+                    <span>
+                      Metrics: Accuracy {report.performanceMetrics?.accuracy ?? '-'}% | Completion {report.performanceMetrics?.completionRate ?? '-'}%
+                    </span>
+                    <span>
+                      Category Marks:{' '}
+                      {(report.categorySpecificMarks || []).map((item) => (
+                        <strong key={`${report.id}-${item.category}`} style={{ color: item.color, marginRight: 8 }}>
+                          {item.label}: {item.marks}%
+                        </strong>
+                      ))}
+                    </span>
                     <span>Plan: {report.improvementPlan.join(' | ')}</span>
                     <button type="button" className="task-delete-btn" onClick={() => downloadAiReportPdf(report, 'PrepLens Student AI Report')}>
                       Download PDF

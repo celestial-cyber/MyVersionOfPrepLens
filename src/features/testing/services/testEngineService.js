@@ -14,11 +14,24 @@ import { randomShuffle, readLocalCollection, uid, uniqueById, writeLocalCollecti
 import { buildAIReport, weakAreaMessage } from '../../insights/utils/aiAnalyzer';
 import { createAdminTask } from '../../admin/services/adminDataService';
 import { pushNotification } from '../../notifications/services/notificationService';
+import { generateAiReportWithApi } from '../../insights/services/realAiReportService';
 
 const LOCAL_TESTS_KEY = 'preplens_local_tests';
 const LOCAL_RESULTS_KEY = 'preplens_local_test_results';
 const LOCAL_REPORTS_KEY = 'preplens_local_ai_reports';
 const ALL_STUDENTS_SCOPE = '__all_students__';
+
+function categoryLabel(value) {
+  const text = String(value || '');
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : 'General';
+}
+
+function scoreColor(score) {
+  const safe = Number(score) || 0;
+  if (safe >= 75) return '#7f67c7';
+  if (safe >= 45) return '#a992e4';
+  return '#d66e9f';
+}
 
 function normalizeTest(id, data) {
   const createdAt = typeof data.createdAt?.toMillis === 'function' ? data.createdAt.toMillis() : Number(data.createdAt) || Date.now();
@@ -61,6 +74,12 @@ function normalizeReport(id, data) {
     detailedAnalysis: Array.isArray(data.detailedAnalysis) ? data.detailedAnalysis : [],
     lackingAreas: Array.isArray(data.lackingAreas) ? data.lackingAreas : [],
     summary: data.summary || '',
+    attemptedTopics: Array.isArray(data.attemptedTopics) ? data.attemptedTopics : [],
+    unattemptedQuestions: Array.isArray(data.unattemptedQuestions) ? data.unattemptedQuestions : [],
+    wrongAnsweredQuestions: Array.isArray(data.wrongAnsweredQuestions) ? data.wrongAnsweredQuestions : [],
+    performanceMetrics: data.performanceMetrics || {},
+    categorySpecificMarks: Array.isArray(data.categorySpecificMarks) ? data.categorySpecificMarks : [],
+    aiProvider: data.aiProvider || 'rules-engine',
     weakestCategory: data.weakestCategory || 'aptitude',
     generatedAt: typeof data.generatedAt?.toMillis === 'function' ? data.generatedAt.toMillis() : Number(data.generatedAt) || Date.now(),
   };
@@ -224,8 +243,12 @@ export async function submitTestAttempt({ uid: userId, test, answers = [], timeT
 
     return {
       questionId: question.questionId,
+      question: question.question,
+      topic: `${categoryLabel(question.category)} - ${question.question}`,
       selectedAnswer: Number.isFinite(selected) ? selected : -1,
+      selectedAnswerText: Number.isFinite(selected) && question.options[selected] ? question.options[selected] : 'Not Attempted',
       correctAnswer: question.correctAnswer,
+      correctAnswerText: question.options[question.correctAnswer],
       isCorrect,
       category: question.category,
     };
@@ -237,6 +260,40 @@ export async function submitTestAttempt({ uid: userId, test, answers = [], timeT
     acc[category] = values.total ? Math.round((values.correct / values.total) * 100) : 0;
     return acc;
   }, {});
+
+  const attempted = normalizedAnswers.filter((entry) => entry.selectedAnswer >= 0);
+  const unattempted = normalizedAnswers.filter((entry) => entry.selectedAnswer < 0);
+  const wrong = normalizedAnswers.filter((entry) => entry.selectedAnswer >= 0 && !entry.isCorrect);
+  const attemptedTopics = Array.from(new Set(attempted.map((entry) => entry.topic)));
+  const unattemptedQuestions = unattempted.map((entry) => ({
+    questionId: entry.questionId,
+    question: entry.question,
+    category: entry.category,
+  }));
+  const wrongAnsweredQuestions = wrong.map((entry) => ({
+    questionId: entry.questionId,
+    question: entry.question,
+    selectedAnswer: entry.selectedAnswerText,
+    correctAnswer: entry.correctAnswerText,
+    category: entry.category,
+  }));
+
+  const categorySpecificMarks = Object.entries(categoryWiseScore).map(([category, marks]) => ({
+    category,
+    label: categoryLabel(category),
+    marks,
+    color: scoreColor(marks),
+  }));
+
+  const performanceMetrics = {
+    totalQuestions,
+    attemptedCount: attempted.length,
+    unattemptedCount: unattempted.length,
+    wrongCount: wrong.length,
+    correctCount: correct,
+    accuracy: attempted.length ? Math.round((correct / attempted.length) * 100) : 0,
+    completionRate: Math.round((attempted.length / totalQuestions) * 100),
+  };
 
   const resultPayload = {
     uid: userId,
@@ -260,13 +317,39 @@ export async function submitTestAttempt({ uid: userId, test, answers = [], timeT
     resultId = resultRef.id;
   }
 
-  const aiReport = buildAIReport({
+  const baseReport = buildAIReport({
     uid: userId,
     testId: test.id,
     categoryWiseScore,
     activityCategoryHours,
     mockInterviewAverage,
   });
+
+  const aiApiReport = await generateAiReportWithApi({
+    uid: userId,
+    testId: test.id,
+    score,
+    categoryWiseScore,
+    performanceMetrics,
+    attemptedTopics,
+    unattemptedQuestions,
+    wrongAnsweredQuestions,
+    categorySpecificMarks,
+  });
+
+  const aiReport = {
+    ...baseReport,
+    summary: aiApiReport?.summary || baseReport.summary,
+    strengths: aiApiReport?.strengths?.length ? aiApiReport.strengths : baseReport.strengths,
+    weaknesses: aiApiReport?.weaknesses?.length ? aiApiReport.weaknesses : baseReport.weaknesses,
+    improvementPlan: aiApiReport?.improvementPlan?.length ? aiApiReport.improvementPlan : baseReport.improvementPlan,
+    attemptedTopics,
+    unattemptedQuestions,
+    wrongAnsweredQuestions,
+    performanceMetrics,
+    categorySpecificMarks,
+    aiProvider: aiApiReport?.source || 'rules-engine',
+  };
 
   const reportPayload = {
     uid: aiReport.uid,
@@ -277,6 +360,12 @@ export async function submitTestAttempt({ uid: userId, test, answers = [], timeT
     detailedAnalysis: aiReport.detailedAnalysis,
     lackingAreas: aiReport.lackingAreas,
     summary: aiReport.summary,
+    attemptedTopics: aiReport.attemptedTopics,
+    unattemptedQuestions: aiReport.unattemptedQuestions,
+    wrongAnsweredQuestions: aiReport.wrongAnsweredQuestions,
+    performanceMetrics: aiReport.performanceMetrics,
+    categorySpecificMarks: aiReport.categorySpecificMarks,
+    aiProvider: aiReport.aiProvider,
     weakestCategory: aiReport.weakestCategory,
     generatedAt: db ? serverTimestamp() : Date.now(),
   };
