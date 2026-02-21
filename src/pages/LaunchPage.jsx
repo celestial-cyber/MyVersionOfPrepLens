@@ -163,7 +163,7 @@ export default function LaunchPage() {
             type="button"
             aria-label="Toggle dark mode"
             onClick={() => setDarkMode((prev) => !prev)}
-            className="rounded-xl border border-neutral-300 bg-white/80 p-2.5 text-neutral-700 shadow-sm transition hover:-translate-y-0.5 hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:border-neutral-300"
+            className="rounded-xl border border-neutral-300 bg-white/80 p-2.5 text-neutral-700 shadow-sm transition hover:-translate-y-0.5 hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:border-neutral-300"
           >
             {darkMode ? <SunIcon /> : <MoonIcon />}
           </button>
@@ -198,7 +198,7 @@ export default function LaunchPage() {
               <motion.div whileHover={{ y: -5, scale: 1.015 }} whileTap={{ scale: 0.985 }}>
                 <Link
                   to="/admin"
-                  className="flex items-center justify-center gap-3 rounded-2xl border border-neutral-700 bg-black dark:bg-white dark:border-neutral-200 px-6 py-4 text-base font-semibold text-white shadow-xl shadow-black/35 transition dark:text-black"
+                  className="flex items-center justify-center gap-3 rounded-2xl border border-neutral-700 bg-neutral-800 px-6 py-4 text-base font-semibold text-white shadow-xl shadow-black/35 transition hover:bg-neutral-900 hover:text-white active:bg-neutral-500 active:text-white dark:bg-white dark:border-neutral-200 dark:text-black dark:hover:bg-neutral-100 dark:hover:text-black dark:active:bg-neutral-300 dark:active:text-black"
                 >
                   <AdminIcon />
                   Admin / Trainer Login
@@ -265,6 +265,7 @@ export default function LaunchPage() {
     </div>
   );
 }
+
 
 
 

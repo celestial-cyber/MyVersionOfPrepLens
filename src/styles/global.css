@@ -33,4 +33,29 @@ a:visited {
 
 button {
   font: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+html:not(.dark) button:hover {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-color: #111111 !important;
+}
+
+html.dark button:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+html:not(.dark) button:active {
+  background: #6b7280 !important;
+  color: #ffffff !important;
+  border-color: #6b7280 !important;
+}
+
+html.dark button:active {
+  background: #a3a3a3 !important;
+  color: #000000 !important;
+  border-color: #a3a3a3 !important;
 }

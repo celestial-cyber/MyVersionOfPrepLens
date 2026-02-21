@@ -80,7 +80,7 @@ export default function DashboardShell({
             <button
               type="button"
               onClick={() => setSidebarOpen((prev) => !prev)}
-              className="inline-flex rounded-xl border border-neutral-300 bg-white p-2 text-neutral-700 transition hover:bg-neutral-100 lg:hidden dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+              className="inline-flex rounded-xl border border-neutral-300 bg-white p-2 text-neutral-700 transition hover:bg-neutral-100 lg:hidden dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
               aria-label="Toggle sidebar"
             >
               <MenuIcon />
@@ -98,14 +98,14 @@ export default function DashboardShell({
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-xs font-medium text-neutral-700 sm:block dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200">
+            <div className="hidden rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-xs font-medium text-neutral-700 sm:block dark:border-neutral-700 dark:bg-neutral-900 dark:text-white">
               {streakText}
             </div>
 
             <button
               type="button"
               aria-label="Notifications"
-              className="rounded-xl border border-neutral-300 bg-white p-2 text-neutral-700 transition hover:-translate-y-0.5 hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+              className="rounded-xl border border-neutral-300 bg-white p-2 text-neutral-700 transition hover:-translate-y-0.5 hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
             >
               <BellIcon />
             </button>
@@ -114,7 +114,7 @@ export default function DashboardShell({
               type="button"
               onClick={() => setIsDarkMode((prev) => !prev)}
               aria-label="Toggle theme"
-              className="rounded-xl border border-neutral-300 bg-white p-2 text-neutral-700 transition hover:-translate-y-0.5 hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+              className="rounded-xl border border-neutral-300 bg-white p-2 text-neutral-700 transition hover:-translate-y-0.5 hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
             >
               {isDarkMode ? <SunIcon /> : <MoonIcon />}
             </button>
@@ -155,8 +155,8 @@ export default function DashboardShell({
                     className={[
                       'rounded-xl px-4 py-3 text-sm font-medium transition duration-200',
                       isActive
-                        ? 'bg-neutral-900 text-white shadow-lg dark:bg-white dark:text-black'
-                        : 'text-neutral-700 hover:-translate-y-0.5 hover:bg-neutral-100 hover:text-black dark:text-neutral-200 dark:hover:bg-neutral-800 dark:hover:text-white',
+                        ? 'bg-neutral-600 text-white shadow-lg dark:bg-neutral-400 dark:text-black'
+                        : 'text-neutral-700 hover:-translate-y-0.5 hover:bg-neutral-100 hover:text-black dark:text-white dark:hover:bg-neutral-800 dark:hover:text-white',
                     ].join(' ')}
                   >
                     {item.label}
@@ -168,7 +168,7 @@ export default function DashboardShell({
             <button
               type="button"
               onClick={onLogout}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-neutral-100 px-4 py-2.5 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-neutral-100 px-4 py-2.5 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
             >
               <LogoutIcon />
               Logout
@@ -190,5 +190,6 @@ export default function DashboardShell({
     </div>
   );
 }
+
 
 

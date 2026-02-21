@@ -87,7 +87,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => navigate('/', { replace: true })}
-              className="rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-700 transition hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+              className="rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-700 transition hover:border-neutral-500 hover:text-black dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
             >
               Back to Home
             </button>
@@ -149,6 +149,7 @@ export default function Login() {
     </section>
   );
 }
+
 
 
 
