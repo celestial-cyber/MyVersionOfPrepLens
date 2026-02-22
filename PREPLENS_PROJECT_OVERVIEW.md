@@ -2,7 +2,7 @@
 
 # 🚀 PrepLens — Smart Placement Preparation Tracker
 
-**PrepLens** is an AI-powered placement preparation platform that bridges the gap between academic learning and industry readiness.
+**PrepLens** is an placement preparation platform that bridges the gap between academic learning and industry readiness.
 It provides **role-based dashboards** for Students and Admins, along with AI-driven insights to guide preparation effectively.
 
 **Built by Team Celestial Voyagers ✨**
